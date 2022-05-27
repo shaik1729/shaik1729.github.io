@@ -1,0 +1,3625 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="./images/Taj.jpg" />
+
+    <title>Taj Shaik</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper@7/swiper-bundle.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../default.css" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
+    <!-- this link of syle sheet is used to change the colours -->
+    <link id="theme-style" rel="stylesheet" href="" />
+  </head>
+
+  <body>
+    <section class="s1">
+      <div class="main-container">
+        <div class="greeting-wrapper">
+          <h1>BIG DATA ANALYTICS LABORATORY R19 JNTUA</h1>
+        </div>
+
+        <div class="container">
+          <div class="card">
+            <h5 class="card-header">EXP : 1 Install Apache Hadoop</h5>
+            <div class="card-body">
+              <h5 class="card-title">Introduction</h5>
+              <pre>
+                    Apache Hadoop is an open-source software framework used to store, manage and process large datasets for various big data computing applications running under clustered systems. It is Java-based and uses Hadoop Distributed File System (HDFS) to store its data and process data using MapReduce. In this article, you will learn how ro install and configure Apache Hadoop on Ubuntu 20.04.
+                </pre
+              >
+              <h5>Prerequisites</h5>
+              <pre>
+                    • Deploy a fully updated Vultr Ubuntu 20.04 Server. 
+                    • Create a non-root user with sudo access. 
+                </pre
+              >
+
+              <h5>1.1 Install Java</h5>
+
+              <pre>
+    Install the latest version of Java.
+
+    $ sudo apt install default-jdk default-jre -y
+
+    Verify the installed version of Java.
+
+    $ java -version</pre
+              >
+
+              <h5>1.2 Create Hadoop User and Configure Password-less SSH</h5>
+
+              <pre>
+    Add a new user hadoop.
+
+    $ sudo adduser hadoop
+
+    Add the hadoop user to the sudo group.
+
+    $ sudo usermod -aG sudo hadoop
+
+    Switch to the created user.
+
+    $ sudo su - hadoop
+
+    Install the OpenSSH server and client.
+
+    $ apt install openssh-server openssh-client -y
+
+    When you get a prompt, respond with:
+
+    keep the local version currently installed
+
+    Switch to the created user.
+
+    $ sudo su - hadoop
+
+    Generate public and private key pairs.
+
+    $ ssh-keygen -t rsa
+
+    Add the generated public key from id_rsa.pub to authorized_keys.
+
+    $ sudo cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+    Change the permissions of the authorized_keys file.
+
+    $ sudo chmod 640 ~/.ssh/authorized_keys
+
+    Verify if the password-less SSH is functional.
+
+    $ ssh localhost</pre
+              >
+
+              <h5>1.3 Install Apache Hadoop</h5>
+
+              <pre>
+    Log in with hadoop user.    
+
+    $ sudo su - hadoop
+
+    download hadoop from url : 
+
+    $ wget https://downloads.apache.org/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz
+
+    Extract the downloaded file.
+
+    $ tar -xvzf hadoop-3.3.1.tar.gz
+
+    Move the extracted directory to the /usr/local/ directory.
+
+    $ sudo mv hadoop-3.3.1 /usr/local/hadoop
+
+    Create directory to store system logs.
+
+    $ sudo mkdir /usr/local/hadoop/logs
+
+    Change the ownership of the hadoop directory.
+
+    $ sudo chown -R hadoop:hadoop /usr/local/hadoop</pre
+              >
+
+              <h5>1.4 Configure Hadoop</h5>
+
+              <pre>
+    Edit file ~/.bashrc to configure the Hadoop environment variables.
+
+    $ sudo nano ~/.bashrc
+
+    Add the following lines to the file. Save and close the file.
+
+    export HADOOP_HOME=/usr/local/hadoop
+
+    export HADOOP_INSTALL=$HADOOP_HOME
+
+    export HADOOP_MAPRED_HOME=$HADOOP_HOME
+
+    export HADOOP_COMMON_HOME=$HADOOP_HOME
+
+    export HADOOP_HDFS_HOME=$HADOOP_HOME
+
+    export YARN_HOME=$HADOOP_HOME
+
+    export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+
+    export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+
+    export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+
+    Activate the environment variables.
+
+    $ source ~/.bashrc</pre
+              >
+
+              <h5>1.5 Configure Java Environment Variables</h5>
+
+              <pre>
+        Hadoop has a lot of components that enable it to perform its core functions. To configure these components such as YARN, HDFS, MapReduce, and Hadoop-related project settings, you need to define Java environment variables in hadoop-env.sh configuration file.
+
+        Find the Java path.
+
+        $ which javac
+
+        Find the OpenJDK directory.
+
+        $ readlink -f /usr/bin/javac
+
+        Edit the hadoop-env.sh file.
+
+        $ sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+        Add the following lines to the file. Then, close and save the file.
+
+        export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+        export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
+
+        Browse to the hadoop lib directory.
+
+        $ cd /usr/local/hadoop/lib
+
+        Download the Javax activation file.
+
+        $ sudo wget https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar
+
+        Verify the Hadoop version.
+
+        $ hadoop version
+
+        Edit the core-site.xml configuration file to specify the URL for your NameNode.
+
+        $ sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
+
+        Add the following lines. Save and close the file.
+
+        &lt;configuration&gt;
+
+            &lt;property&gt;
+
+                &lt;name&gt;fs.default.name&lt;/name&gt;
+
+                &lt;value&gt;hdfs://0.0.0.0:9000&lt;/value&gt;
+
+                &lt;description&gt;The default file system URI&lt;/description&gt;
+
+            &lt;/property&gt;
+
+        &lt;/configuration&gt;
+
+        Create a directory for storing node metadata and change the ownership to hadoop.
+
+        $ sudo mkdir -p /home/hadoop/hdfs/{namenode,datanode}
+        
+        $ sudo chown -R hadoop:hadoop /home/hadoop/hdfs
+
+        Edit hdfs-site.xml configuration file to define the location for storing node metadata, fs-image file.
+
+        $ sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+
+        Add the following lines. Close and save the file.
+
+        &lt;configuration&gt;
+
+            &lt;property&gt;
+
+                &lt;name&gt;dfs.replication&lt;/name&gt;
+
+                &lt;value&gt;1&lt;/value&gt;
+
+            &lt;/property&gt;
+        
+    
+            &lt;property&gt;
+    
+                &lt;name&gt;dfs.name.dir&lt;/name&gt;
+        
+                &lt;value&gt;file:///home/hadoop/hdfs/namenode&lt;/value&gt;
+    
+            &lt;/property&gt;
+
+    
+            &lt;property&gt;
+    
+                &lt;name&gt;dfs.data.dir&lt;/name&gt;
+        
+                &lt;value&gt;file:///home/hadoop/hdfs/datanode&lt;/value&gt;
+    
+            &lt;/property&gt;
+
+        &lt;/configuration&gt;
+
+        Edit mapred-site.xml configuration file to define MapReduce values.
+
+        $ sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml
+
+        Add the following lines. Save and close the file.
+
+        &lt;configuration&gt;
+
+            &lt;property&gt;
+
+                &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+
+                &lt;value&gt;yarn&lt;/value&gt;
+
+            &lt;/property&gt;
+
+        &lt;/configuration&gt;
+
+        Edit the yarn-site.xml configuration file and define YARN-related settings.
+
+        $ sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
+
+        Add the following lines. Save and close the file.
+
+        &lt;configuration&gt;
+
+            &lt;property&gt;
+
+                &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+
+                &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+
+            &lt;/property&gt;
+
+        &lt;/configuration&gt;
+
+        Log in with hadoop user.
+
+        $ sudo su - hadoop
+
+        Validate the Hadoop configuration and format the HDFS NameNode.
+
+        $ hdfs namenode -format</pre
+              >
+
+              <h5>1.6 Start the Apache Hadoop Cluster</h5>
+
+              <pre>
+            Start the NameNode and DataNode.
+
+            $ start-dfs.sh
+
+            Start the YARN resource and node managers.
+
+            $ start-yarn.sh
+
+            Verify all the running components.
+
+            $ jps
+
+        </pre
+              >
+
+              <h5>1.7 Access Apache Hadoop Web Interface</h5>
+
+              <pre>
+            You can access the Hadoop NameNode on your browser via http://server-IP:9870. For example:
+
+            http://127.0.0.1:9870
+
+            Conclusion
+
+            You have successfully installed Apache Hadoop on your server. You can now access the 
+            dashboard and configure your preferences.</pre
+              >
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 2 Develop a MapReduce program to calculate the frequency of a given word in agiven file.</h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">WordCount.java</h5>
+
+              <pre>
+                
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class WordCount {
+
+  public static class TokenizerMapper
+       extends Mapper&lt;Object, Text, Text, IntWritable&gt;{
+
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+
+    public void map(Object key, Text value, Context context
+                    ) throws IOException, InterruptedException {
+      StringTokenizer itr = new StringTokenizer(value.toString());
+      while (itr.hasMoreTokens()) {
+        word.set(itr.nextToken());
+        context.write(word, one);
+      }
+    }
+  }
+
+  public static class IntSumReducer
+       extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; {
+    private IntWritable result = new IntWritable();
+
+    public void reduce(Text key, Iterable&lt;IntWritable&gt; values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      int sum = 0;
+      for (IntWritable val : values) {
+        sum += val.get();
+      }
+      result.set(sum);
+      context.write(key, result);
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf, "word count");
+    job.setJarByClass(WordCount.class);
+    job.setMapperClass(TokenizerMapper.class);
+    job.setCombinerClass(IntSumReducer.class);
+    job.setReducerClass(IntSumReducer.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+  }
+}
+              </pre>
+              <h5 class="card-title">creating data : 
+              </h5>
+
+              <pre>
+-> create a file name “file” using nano command : nano file
+-> enter the below text : 
+Hello World Bye World Hello Hadoop Goodbye Hadoop
+</pre>
+<h5 class="card-title">commands for execution :</h5>
+<pre>
+$ hadoop com.sun.tools.javac.Main WordCount.java
+$ jar cf wc.jar *.class
+$ hadoop fs -mkdir -p /user/hadoop/wordcount/input/
+$ hadoop fs -put -f file /user/hadoop/wordcount/input/
+$ hadoop fs -ls /user/hadoop/wordcount/input/
+$ hadoop fs -cat /user/hadoop/wordcount/input/file
+$ hadoop jar wc.jar WordCount /user/hadoop/wordcount/input /user/hadoop/wordcount/output
+$ hadoop fs -cat /user/hadoop/wordcount/output/part-r-00000
+</pre>
+              </pre>
+              <h5 class="card-title">output :</h5>
+<pre>
+Bye 1
+Goodbye 1
+Hadoop 2
+Hello 2
+World 2
+</pre>
+            </div>
+
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 3 Develop a MapReduce program to find the maximum temperature in each year.</h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">MaxMonTem.java</h5>
+              <pre>
+                
+import java.util.*; 
+import java.io.IOException; 
+import java.io.IOException; 
+
+import org.apache.hadoop.fs.Path; 
+import org.apache.hadoop.conf.*; 
+import org.apache.hadoop.io.*; 
+import org.apache.hadoop.mapred.*; 
+import org.apache.hadoop.util.*; 
+
+public class MaxMonTem {
+        //Mapper class
+        public static class MM_TMapper extends MapReduceBase implements
+        Mapper&lt;LongWritable, /*Input key*/
+        Text,
+        Text,
+        IntWritable&gt; {
+                //Map function
+                public void map (LongWritable key, Text value,
+                OutputCollector&lt;Text, IntWritable&gt;output,
+                Reporter reporter) throws IOException {
+                        
+                        String line = value.toString();
+                        StringTokenizer st = new StringTokenizer(line,")(");
+                        while(st.hasMoreTokens()){
+                        String token = st.nextToken();
+                        if(token.length() > 2){
+                        StringTokenizer sst = new StringTokenizer(token,",");
+                        String year = sst.nextToken().substring(0,4);
+                        int tem = Integer.parseInt(sst.nextToken());
+                        output.collect(new Text(year), new IntWritable(tem));
+                        }
+                }
+            }
+        }
+ //Reducer class
+public static class MM_TReduce extends MapReduceBase implements
+        Reducer&lt;Text, IntWritable, Text, IntWritable&gt; {
+                //Reduce function
+                public void reduce(Text key, Iterator &lt;IntWritable&gt; values,
+                        OutputCollector&lt;Text,IntWritable&gt; output, Reporter reporter) throws IOException {
+                        int max = values.next().get();
+                        while(values.hasNext()){
+                                int tem = values.next().get();
+                                if(max < tem){
+                                        max = tem;
+                                }
+                        }
+                        output.collect(key, new IntWritable(max));
+                }
+        }
+        public static void main(String[] args) throws Exception{
+                JobConf conf = new JobConf(MaxMonTem.class);
+
+                conf.setJobName("maximumMonthly_temperature");
+                conf.setOutputKeyClass(Text.class);
+                conf.setOutputValueClass(IntWritable.class);
+                conf.setMapperClass(MM_TMapper.class);
+                conf.setCombinerClass(MM_TReduce.class);
+                conf.setReducerClass(MM_TReduce.class);
+                conf.setInputFormat(TextInputFormat.class);
+                conf.setOutputFormat(TextOutputFormat.class);
+                FileInputFormat.setInputPaths(conf, new Path(args[0]));
+                FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+                JobClient.runJob(conf);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">data set : data_tem.txt</h5>
+              <pre>
+(200707,100), (200706,90)
+(200508,90), (200607,100)
+(200708,80), (200606,80)
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main MaxMonTem.java
+$ jar cf mmt.jar *.class
+$ hadoop fs -mkdir -p /user/hadoop/MaxMonTem/input/
+$ hadoop fs -put -f data_tem.txt /user/hadoop/MaxMonTem/input/
+$ hadoop fs -ls /user/hadoop/MaxMonTem/input/
+$ hadoop fs -cat /user/hadoop/MaxMonTem/input/data_tem.txt
+$ hadoop jar mmt.jar MaxMonTem /user/hadoop/MaxMonTem/input /user/hadoop/MaxMonTem/output
+$ hadoop fs -cat /user/hadoop/MaxMonTem/output/part-r-00000
+
+              </pre>
+              <h5 class="card-title">output : </h5>
+              <pre>
+2005    90
+2006    100
+2007    100
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 4 Develop a MapReduce program to implement Matrix Multiplication.</h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">Map.java</h5>
+              <pre>
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.IOException;
+
+public class Map
+  extends org.apache.hadoop.mapreduce.Mapper&lt;LongWritable, Text, Text, Text&gt; {
+        @Override
+        public void map(LongWritable key, Text value, Context context)
+                        throws IOException, InterruptedException {
+                Configuration conf = context.getConfiguration();
+                int m = Integer.parseInt(conf.get("m"));
+                int p = Integer.parseInt(conf.get("p"));
+                String line = value.toString();
+                // (M, i, j, Mij);
+                String[] indicesAndValue = line.split(",");
+                Text outputKey = new Text();
+                Text outputValue = new Text();
+                if (indicesAndValue[0].equals("M")) {
+                        for (int k = 0; k < p; k++) {
+                                outputKey.set(indicesAndValue[1] + "," + k);
+                                // outputKey.set(i,k);
+                                outputValue.set(indicesAndValue[0] + "," + indicesAndValue[2]
+                                                + "," + indicesAndValue[3]);
+                                // outputValue.set(M,j,Mij);
+                                context.write(outputKey, outputValue);
+                        }
+                } else {
+                        // (N, j, k, Njk);
+                        for (int i = 0; i < m; i++) {
+                                outputKey.set(i + "," + indicesAndValue[2]);
+                                outputValue.set("N," + indicesAndValue[1] + ","
+                                                + indicesAndValue[3]);
+                                context.write(outputKey, outputValue);
+                        }
+                }
+        }
+}
+
+              </pre>
+              <h5 class="card-title">MatrixMultiply.java</h5>
+              <pre>
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+public class MatrixMultiply {
+        
+    public static void main(String[] args) throws Exception {
+        if (args.length != 2) {
+            System.err.println("Usage: MatrixMultiply &lt;in_dir&gt; &lt;out_dir&gt;");
+            System.exit(2);
+        }
+        Configuration conf = new Configuration();
+        // M is an m-by-n matrix; N is an n-by-p matrix.
+        conf.set("m", "1000");
+        conf.set("n", "100");
+        conf.set("p", "1000");
+        @SuppressWarnings("deprecation")
+                Job job = new Job(conf, "MatrixMultiply");
+        job.setJarByClass(MatrixMultiply.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+ 
+        job.setMapperClass(Map.class);
+        job.setReducerClass(Reduce.class);
+ 
+        job.setInputFormatClass(TextInputFormat.class);
+        job.setOutputFormatClass(TextOutputFormat.class);
+ 
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+ 
+        job.waitForCompletion(true);
+    }
+}
+
+              </pre>
+              <h5 class="card-title">Reduce.java</h5>
+              <pre>
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+public class Reduce
+  extends org.apache.hadoop.mapreduce.Reducer&lt;Text, Text, Text, Text&gt; {
+        @Override
+        public void reduce(Text key, Iterable&lt;Text&gt; values, Context context)
+                        throws IOException, InterruptedException {
+                String[] value;
+                HashMap&lt;Integer, Float&gt; hashA = new HashMap&lt;Integer, Float&gt;();
+                HashMap&lt;Integer, Float&gt; hashB = new HashMap&lt;Integer, Float&gt;();
+                for (Text val : values) {
+                        value = val.toString().split(",");
+                        if (value[0].equals("M")) {
+                                hashA.put(Integer.parseInt(value[1]), Float.parseFloat(value[2]));
+                        } else {
+                                hashB.put(Integer.parseInt(value[1]), Float.parseFloat(value[2]));
+                        }
+                }
+                int n = Integer.parseInt(context.getConfiguration().get("n"));
+                float result = 0.0f;
+                float m_ij;
+                float n_jk;
+                for (int j = 0; j < n; j++) {
+                        m_ij = hashA.containsKey(j) ? hashA.get(j) : 0.0f;
+                        n_jk = hashB.containsKey(j) ? hashB.get(j) : 0.0f;
+                        result += m_ij * n_jk;
+                }
+                if (result != 0.0f) {
+                        context.write(null,
+                                        new Text(key.toString() + "," + Float.toString(result)));
+                }
+        }
+}
+
+              </pre>
+              <h5 class="card-title">data set download : </h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/marufaytekin/MatrixMultiply/main/input/M
+$ wget https://raw.githubusercontent.com/marufaytekin/MatrixMultiply/main/input/N
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+$ jar cf mm.jar *.class
+$ hadoop fs -mkdir -p /user/hadoop/mm/input/
+$ hadoop fs -put -f M /user/hadoop/mm/input/
+$ hadoop fs -put -f N /user/hadoop/mm/input/
+$ hadoop fs -ls /user/hadoop/mm/input/
+$ hadoop fs -cat /user/hadoop/mm/input/M
+$ hadoop fs -cat /user/hadoop/mm/input/N
+$ hadoop jar mm.jar MatrixMultiply /user/hadoop/mm/input /user/hadoop/mm/output
+$ hadoop fs -cat /user/hadoop/mm/output/part-r-00000
+              </pre>
+              <h5 class="card-title">output : </h5>
+              <pre>
+...
+999,970,493.0
+999,971,586.0
+999,972,763.0
+999,973,717.0
+999,974,236.0
+999,975,532.0
+999,976,674.0
+999,977,877.0
+999,978,315.0
+999,979,390.0
+999,98,830.0
+999,980,560.0
+999,981,856.0
+999,982,551.0
+999,983,479.0
+999,984,1038.0
+999,985,564.0
+999,986,909.0
+999,987,623.0
+999,988,458.0
+999,989,692.0
+999,99,604.0
+999,990,557.0
+999,991,877.0
+999,992,252.0
+999,993,689.0
+999,994,659.0
+999,995,298.0
+999,996,251.0
+999,997,316.0
+999,998,505.0
+999,999,507.0
+
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 5 Develop a MapReduce to analyze weather data set and print whether the day is shinny or cool day.</h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">MyMaxMin.java</h5>
+              <pre>
+import java.io.IOException;
+import java.util.Iterator;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.conf.Configuration;
+
+public class MyMaxMin {
+public static class MaxTemperatureMapper extends Mapper&lt;LongWritable, Text, Text, Text&gt; {
+public static final int MISSING = 9999;
+@Override
+public void map(LongWritable arg0, Text Value, Context context) throws IOException, InterruptedException {
+String line = Value.toString();
+if (!(line.length() == 0)) {
+String date = line.substring(6, 14);
+float temp_Max = Float.parseFloat(line.substring(39, 45).trim());			
+float temp_Min = Float.parseFloat(line.substring(47, 53).trim());
+if (temp_Max > 30.0) {
+context.write(new Text("The Day is Hot Day :" + date), new Text(String.valueOf(temp_Max)));
+}
+if (temp_Min < 15) {
+context.write(new Text("The Day is Cold Day :" + date), new Text(String.valueOf(temp_Min)));
+}
+}
+}	
+}	
+public static class MaxTemperatureReducer extends Reducer&lt;Text, Text, Text, Text&gt; {
+public void reduce(Text Key, Iterator&lt;Text&gt; Values, Context context) throws IOException, InterruptedException {
+String temperature = Values.next().toString();
+context.write(Key, new Text(temperature));
+}
+}
+public static void main(String[] args) throws Exception {
+Configuration conf = new Configuration();
+Job job = new Job(conf, "weather example");
+job.setJarByClass(MyMaxMin.class);
+job.setMapOutputKeyClass(Text.class);
+job.setMapOutputValueClass(Text.class);
+job.setMapperClass(MaxTemperatureMapper.class);
+job.setReducerClass(MaxTemperatureReducer.class);
+job.setInputFormatClass(TextInputFormat.class);
+job.setOutputFormatClass(TextOutputFormat.class);
+Path OutputPath = new Path(args[1]);
+FileInputFormat.addInputPath(job, new Path(args[0]));
+FileOutputFormat.setOutputPath(job, new Path(args[1]));
+OutputPath.getFileSystem(conf).delete(OutputPath);
+System.exit(job.waitForCompletion(true) ? 0 : 1);
+}
+}
+
+              </pre>
+              <h5 class="card-title">Download dataset : </h5>
+              <pre>
+$ wget https://www1.ncdc.noaa.gov/pub/data/uscrn/products/daily01/2021/CRND0103-2021-NV_Mercury_3_SSW.txt
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+$ jar cf whether.jar *.class
+$ hadoop fs -mkdir -p /user/hadoop/whether/input/
+$ hadoop fs -put -f CRND0103-2021-NV_Mercury_3_SSW.txt /user/hadoop/whether/input/
+$ hadoop fs -ls /user/hadoop/whether/input/
+$ hadoop fs -cat /user/hadoop/whether/input/RND0103-2021-NV_Mercury_3_SSW.txt
+$ hadoop jar whether.jar MyMaxMin /user/hadoop/whether/input /user/hadoop/whether/output
+$ hadoop fs -cat /user/hadoop/whether/output/part-r-00000
+
+              </pre>
+              <h5 class="card-title">output :</h5>
+              <pre>
+The Day is Cold Day :20210101	0.0
+The Day is Cold Day :20210102	-3.2
+The Day is Cold Day :20210103	-0.3
+The Day is Cold Day :20210104	0.2
+The Day is Cold Day :20210105	-2.4
+The Day is Cold Day :20210106	1.4
+The Day is Cold Day :20210107	-2.4
+The Day is Cold Day :20210108	0.6
+The Day is Cold Day :20210109	0.4
+The Day is Cold Day :20210110	0.3
+The Day is Cold Day :20210111	-0.4
+The Day is Cold Day :20210112	-3.5
+The Day is Cold Day :20210113	-0.2
+The Day is Cold Day :20210114	3.1
+The Day is Cold Day :20210115	5.6
+The Day is Cold Day :20210116	6.1
+The Day is Cold Day :20210117	5.0
+The Day is Cold Day :20210118	5.9
+The Day is Cold Day :20210119	3.4
+The Day is Cold Day :20210120	3.9
+The Day is Cold Day :20210121	-0.3
+The Day is Cold Day :20210122	3.5
+The Day is Cold Day :20210123	-0.9
+The Day is Cold Day :20210124	-4.4
+The Day is Cold Day :20210125	-0.6
+The Day is Cold Day :20210126	-6.7
+The Day is Cold Day :20210127	-5.5
+The Day is Cold Day :20210128	-0.3
+The Day is Cold Day :20210129	-0.7
+The Day is Cold Day :20210130	-2.0
+The Day is Cold Day :20210131	0.6
+The Day is Cold Day :20210201	4.8
+The Day is Cold Day :20210202	2.4
+The Day is Cold Day :20210203	6.5
+The Day is Cold Day :20210204	3.4
+The Day is Cold Day :20210205	2.2
+The Day is Cold Day :20210206	3.2
+The Day is Cold Day :20210207	-0.4
+The Day is Cold Day :20210208	0.0
+The Day is Cold Day :20210209	4.4
+The Day is Cold Day :20210210	2.3
+The Day is Cold Day :20210211	1.7
+The Day is Cold Day :20210212	6.8
+The Day is Cold Day :20210213	3.8
+The Day is Cold Day :20210214	-2.3
+The Day is Cold Day :20210215	1.3
+The Day is Cold Day :20210216	5.0
+The Day is Cold Day :20210217	-0.3
+The Day is Cold Day :20210218	-1.7
+The Day is Cold Day :20210219	-2.9
+The Day is Cold Day :20210220	-1.9
+The Day is Cold Day :20210221	0.5
+The Day is Cold Day :20210222	5.0
+The Day is Cold Day :20210223	1.1
+The Day is Cold Day :20210224	-0.5
+The Day is Cold Day :20210225	-2.0
+The Day is Cold Day :20210226	-3.7
+The Day is Cold Day :20210227	1.1
+The Day is Cold Day :20210228	-0.4
+The Day is Cold Day :20210301	-2.8
+The Day is Cold Day :20210302	-1.8
+The Day is Cold Day :20210303	0.0
+The Day is Cold Day :20210304	-0.5
+The Day is Cold Day :20210305	2.1
+The Day is Cold Day :20210306	3.4
+The Day is Cold Day :20210307	1.9
+The Day is Cold Day :20210308	6.8
+The Day is Cold Day :20210309	2.8
+The Day is Cold Day :20210310	2.6
+The Day is Cold Day :20210311	1.3
+The Day is Cold Day :20210312	1.2
+The Day is Cold Day :20210313	-1.7
+The Day is Cold Day :20210314	-2.1
+The Day is Cold Day :20210315	1.6
+The Day is Cold Day :20210316	0.2
+The Day is Cold Day :20210317	0.0
+The Day is Cold Day :20210318	7.1
+The Day is Cold Day :20210319	5.2
+The Day is Cold Day :20210320	8.1
+The Day is Cold Day :20210321	4.4
+The Day is Cold Day :20210322	3.0
+The Day is Cold Day :20210323	4.0
+The Day is Cold Day :20210324	2.3
+The Day is Cold Day :20210325	7.6
+The Day is Cold Day :20210326	4.9
+The Day is Cold Day :20210327	6.2
+The Day is Cold Day :20210328	3.6
+The Day is Cold Day :20210329	4.7
+The Day is Cold Day :20210330	7.3
+The Day is Cold Day :20210331	6.2
+The Day is Cold Day :20210401	5.8
+The Day is Cold Day :20210402	6.3
+The Day is Cold Day :20210403	7.4
+The Day is Cold Day :20210404	7.4
+The Day is Cold Day :20210405	10.1
+The Day is Cold Day :20210406	9.4
+The Day is Cold Day :20210407	6.5
+The Day is Cold Day :20210408	10.2
+The Day is Cold Day :20210409	10.7
+The Day is Cold Day :20210410	7.3
+The Day is Cold Day :20210411	7.9
+The Day is Cold Day :20210412	13.1
+The Day is Cold Day :20210413	10.4
+The Day is Cold Day :20210414	9.2
+The Day is Cold Day :20210415	6.5
+The Day is Cold Day :20210416	9.8
+The Day is Cold Day :20210417	8.9
+The Day is Cold Day :20210418	8.7
+The Day is Cold Day :20210419	4.6
+The Day is Cold Day :20210420	13.3
+The Day is Cold Day :20210421	11.9
+The Day is Cold Day :20210422	6.7
+The Day is Cold Day :20210423	7.5
+The Day is Cold Day :20210424	11.5
+The Day is Cold Day :20210425	12.0
+The Day is Cold Day :20210426	8.0
+The Day is Cold Day :20210427	6.3
+The Day is Cold Day :20210428	7.5
+The Day is Cold Day :20210429	13.2
+The Day is Cold Day :20210430	12.0
+The Day is Cold Day :20210502	10.6
+The Day is Cold Day :20210503	13.3
+The Day is Cold Day :20210504	11.0
+The Day is Cold Day :20210505	14.3
+The Day is Cold Day :20210506	13.4
+The Day is Cold Day :20210508	13.3
+The Day is Cold Day :20210509	14.3
+The Day is Cold Day :20210511	14.7
+The Day is Cold Day :20210512	11.9
+The Day is Cold Day :20210516	13.0
+The Day is Cold Day :20210517	10.0
+The Day is Cold Day :20210518	12.9
+The Day is Cold Day :20210520	12.8
+The Day is Cold Day :20210521	5.4
+The Day is Cold Day :20210522	5.4
+The Day is Cold Day :20210523	3.8
+The Day is Cold Day :20210524	13.0
+The Day is Cold Day :20210525	11.8
+The Day is Cold Day :20210527	12.6
+The Day is Cold Day :20210528	14.7
+The Day is Cold Day :20210610	14.6
+The Day is Cold Day :20210611	10.0
+The Day is Cold Day :20210612	13.4
+The Day is Cold Day :20210904	13.7
+The Day is Cold Day :20210917	13.6
+The Day is Cold Day :20210919	14.0
+The Day is Cold Day :20210922	12.2
+The Day is Cold Day :20210929	14.1
+The Day is Cold Day :20210930	12.5
+The Day is Cold Day :20211001	12.4
+The Day is Cold Day :20211002	10.4
+The Day is Cold Day :20211003	11.5
+The Day is Cold Day :20211004	13.4
+The Day is Cold Day :20211005	13.6
+The Day is Cold Day :20211006	10.8
+The Day is Cold Day :20211007	12.4
+The Day is Cold Day :20211008	13.3
+The Day is Cold Day :20211009	9.0
+The Day is Cold Day :20211010	9.9
+The Day is Cold Day :20211011	4.9
+The Day is Cold Day :20211012	4.8
+The Day is Cold Day :20211013	5.5
+The Day is Cold Day :20211014	3.5
+The Day is Cold Day :20211015	8.4
+The Day is Cold Day :20211016	8.6
+The Day is Cold Day :20211017	6.2
+The Day is Cold Day :20211018	4.8
+The Day is Cold Day :20211019	3.0
+The Day is Cold Day :20211020	4.9
+The Day is Cold Day :20211021	8.8
+The Day is Cold Day :20211022	6.6
+The Day is Cold Day :20211023	12.5
+The Day is Cold Day :20211024	9.8
+The Day is Cold Day :20211025	6.0
+The Day is Cold Day :20211026	3.0
+The Day is Cold Day :20211027	5.3
+The Day is Cold Day :20211028	12.5
+The Day is Cold Day :20211029	11.0
+The Day is Cold Day :20211030	8.4
+The Day is Cold Day :20211031	12.1
+The Day is Cold Day :20211101	8.9
+The Day is Cold Day :20211102	8.2
+The Day is Cold Day :20211103	8.5
+The Day is Cold Day :20211104	8.1
+The Day is Cold Day :20211105	7.5
+The Day is Cold Day :20211106	8.1
+The Day is Cold Day :20211107	11.2
+The Day is Cold Day :20211108	7.5
+The Day is Cold Day :20211109	9.9
+The Day is Cold Day :20211110	5.5
+The Day is Cold Day :20211111	9.8
+The Day is Cold Day :20211112	11.2
+The Day is Cold Day :20211113	8.1
+The Day is Cold Day :20211114	7.9
+The Day is Cold Day :20211115	5.3
+The Day is Cold Day :20211116	8.9
+The Day is Cold Day :20211117	9.4
+The Day is Cold Day :20211118	4.6
+The Day is Cold Day :20211119	6.2
+The Day is Cold Day :20211120	3.3
+The Day is Cold Day :20211121	7.4
+The Day is Cold Day :20211122	4.9
+The Day is Cold Day :20211123	2.6
+The Day is Cold Day :20211124	4.8
+The Day is Cold Day :20211125	2.6
+The Day is Cold Day :20211126	3.4
+The Day is Cold Day :20211127	1.9
+The Day is Cold Day :20211128	4.6
+The Day is Cold Day :20211129	3.4
+The Day is Cold Day :20211130	6.7
+The Day is Cold Day :20211201	8.3
+The Day is Cold Day :20211202	4.2
+The Day is Cold Day :20211203	1.8
+The Day is Cold Day :20211204	1.5
+The Day is Cold Day :20211205	2.8
+The Day is Cold Day :20211206	6.7
+The Day is Cold Day :20211207	8.8
+The Day is Cold Day :20211208	4.7
+The Day is Cold Day :20211209	1.1
+The Day is Cold Day :20211210	-0.4
+The Day is Cold Day :20211211	-2.6
+The Day is Cold Day :20211212	-4.9
+The Day is Cold Day :20211213	-2.5
+The Day is Cold Day :20211214	0.3
+The Day is Cold Day :20211215	-3.0
+The Day is Cold Day :20211216	-4.1
+The Day is Cold Day :20211217	-0.9
+The Day is Cold Day :20211218	-1.7
+The Day is Cold Day :20211219	-3.4
+The Day is Cold Day :20211220	-4.0
+The Day is Cold Day :20211221	-1.6
+The Day is Cold Day :20211222	-2.5
+The Day is Cold Day :20211223	4.3
+The Day is Cold Day :20211224	3.7
+The Day is Cold Day :20211225	0.4
+The Day is Cold Day :20211226	0.1
+The Day is Cold Day :20211227	-1.4
+The Day is Cold Day :20211228	-2.3
+The Day is Cold Day :20211229	-3.7
+The Day is Cold Day :20211230	2.1
+The Day is Cold Day :20211231	1.2
+The Day is Hot Day :20210429	30.3
+The Day is Hot Day :20210430	33.8
+The Day is Hot Day :20210501	31.7
+The Day is Hot Day :20210505	33.0
+The Day is Hot Day :20210506	33.1
+The Day is Hot Day :20210507	30.6
+The Day is Hot Day :20210512	32.8
+The Day is Hot Day :20210513	34.1
+The Day is Hot Day :20210514	34.0
+The Day is Hot Day :20210515	30.5
+The Day is Hot Day :20210518	34.3
+The Day is Hot Day :20210519	31.7
+The Day is Hot Day :20210525	31.0
+The Day is Hot Day :20210526	30.5
+The Day is Hot Day :20210527	32.4
+The Day is Hot Day :20210528	34.0
+The Day is Hot Day :20210529	30.4
+The Day is Hot Day :20210530	34.1
+The Day is Hot Day :20210531	33.8
+The Day is Hot Day :20210601	37.1
+The Day is Hot Day :20210602	38.8
+The Day is Hot Day :20210603	39.9
+The Day is Hot Day :20210604	40.4
+The Day is Hot Day :20210605	39.1
+The Day is Hot Day :20210606	36.4
+The Day is Hot Day :20210607	33.4
+The Day is Hot Day :20210608	31.1
+The Day is Hot Day :20210609	30.6
+The Day is Hot Day :20210611	32.0
+The Day is Hot Day :20210612	36.5
+The Day is Hot Day :20210613	38.6
+The Day is Hot Day :20210614	39.6
+The Day is Hot Day :20210615	42.3
+The Day is Hot Day :20210616	43.2
+The Day is Hot Day :20210617	42.6
+The Day is Hot Day :20210618	41.4
+The Day is Hot Day :20210619	42.1
+The Day is Hot Day :20210620	41.9
+The Day is Hot Day :20210621	39.8
+The Day is Hot Day :20210622	37.8
+The Day is Hot Day :20210623	30.7
+The Day is Hot Day :20210624	34.4
+The Day is Hot Day :20210625	35.5
+The Day is Hot Day :20210626	39.3
+The Day is Hot Day :20210627	40.0
+The Day is Hot Day :20210628	40.2
+The Day is Hot Day :20210629	39.9
+The Day is Hot Day :20210630	35.3
+The Day is Hot Day :20210701	38.5
+The Day is Hot Day :20210702	39.4
+The Day is Hot Day :20210703	34.8
+The Day is Hot Day :20210704	39.4
+The Day is Hot Day :20210705	39.8
+The Day is Hot Day :20210706	41.7
+The Day is Hot Day :20210707	43.0
+The Day is Hot Day :20210708	42.7
+The Day is Hot Day :20210709	43.0
+The Day is Hot Day :20210710	44.7
+The Day is Hot Day :20210711	45.0
+The Day is Hot Day :20210712	43.9
+The Day is Hot Day :20210713	40.6
+The Day is Hot Day :20210714	39.7
+The Day is Hot Day :20210715	38.3
+The Day is Hot Day :20210716	38.9
+The Day is Hot Day :20210717	39.7
+The Day is Hot Day :20210718	35.8
+The Day is Hot Day :20210719	35.1
+The Day is Hot Day :20210720	38.3
+The Day is Hot Day :20210721	9999.0
+The Day is Hot Day :20210722	9999.0
+The Day is Hot Day :20210723	38.9
+The Day is Hot Day :20210724	38.2
+The Day is Hot Day :20210725	38.0
+The Day is Hot Day :20210727	35.4
+The Day is Hot Day :20210728	38.1
+The Day is Hot Day :20210729	37.7
+The Day is Hot Day :20210730	34.3
+The Day is Hot Day :20210731	32.2
+The Day is Hot Day :20210801	36.4
+The Day is Hot Day :20210802	38.6
+The Day is Hot Day :20210803	40.6
+The Day is Hot Day :20210804	42.1
+The Day is Hot Day :20210805	41.4
+The Day is Hot Day :20210806	37.2
+The Day is Hot Day :20210807	38.3
+The Day is Hot Day :20210808	38.7
+The Day is Hot Day :20210809	38.4
+The Day is Hot Day :20210810	38.9
+The Day is Hot Day :20210811	38.5
+The Day is Hot Day :20210812	38.6
+The Day is Hot Day :20210813	38.5
+The Day is Hot Day :20210814	39.8
+The Day is Hot Day :20210815	41.2
+The Day is Hot Day :20210816	40.1
+The Day is Hot Day :20210817	37.7
+The Day is Hot Day :20210818	34.2
+The Day is Hot Day :20210819	31.6
+The Day is Hot Day :20210820	33.6
+The Day is Hot Day :20210821	34.3
+The Day is Hot Day :20210822	36.2
+The Day is Hot Day :20210823	35.8
+The Day is Hot Day :20210824	35.9
+The Day is Hot Day :20210825	37.4
+The Day is Hot Day :20210826	36.3
+The Day is Hot Day :20210827	38.7
+The Day is Hot Day :20210828	39.6
+The Day is Hot Day :20210829	39.8
+The Day is Hot Day :20210830	39.2
+The Day is Hot Day :20210831	35.8
+The Day is Hot Day :20210901	33.7
+The Day is Hot Day :20210902	34.3
+The Day is Hot Day :20210903	33.7
+The Day is Hot Day :20210904	35.6
+The Day is Hot Day :20210905	37.4
+The Day is Hot Day :20210906	39.5
+The Day is Hot Day :20210907	40.3
+The Day is Hot Day :20210908	41.1
+The Day is Hot Day :20210909	39.2
+The Day is Hot Day :20210910	37.5
+The Day is Hot Day :20210911	35.7
+The Day is Hot Day :20210912	37.0
+The Day is Hot Day :20210913	36.9
+The Day is Hot Day :20210914	35.6
+The Day is Hot Day :20210915	35.5
+The Day is Hot Day :20210916	34.0
+The Day is Hot Day :20210917	32.1
+The Day is Hot Day :20210918	31.6
+The Day is Hot Day :20210919	30.6
+The Day is Hot Day :20210921	31.3
+The Day is Hot Day :20210922	34.0
+The Day is Hot Day :20210923	33.4
+The Day is Hot Day :20210924	33.2
+The Day is Hot Day :20210925	32.6
+The Day is Hot Day :20210926	32.1
+The Day is Hot Day :20210927	32.6
+The Day is Hot Day :20211003	31.7
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 6 Develop a MapReduce program to find the number of products sold in each country by considering sales data containing fields like</h5>
+            
+            <table>
+              <td>Tranction_Date</td>
+              <td>Price</td>
+              <td>Payment_Type</td>
+              <td>Name</td>
+              <td>City</td>
+              <td>State</td>
+              <td>Country</td>
+              <td>Account_Created</td>
+              <td>Last_Login</td>
+              <td>Latitude</td>
+              <td>Longitude</td>
+              <td>Product</td>
+
+            </table>
+              
+            <div class="card-body">
+              <h5 class="card-title">SalesMapper.java</h5>
+              <pre>
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.*;
+
+public class SalesMapper extends MapReduceBase implements Mapper&lt;LongWritable, Text, Text, IntWritable&gt; {
+        private final static IntWritable one = new IntWritable(1);
+
+        public void map(LongWritable key, Text value, OutputCollector&lt;Text, IntWritable&gt; output, Reporter reporter) throws IOException {
+
+                String valueString = value.toString();
+                String[] SingleCountryData = valueString.split(",");
+                output.collect(new Text(SingleCountryData[7]), one);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">SalesCountryDriver.java</h5>
+              <pre>
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapred.*;
+
+public class SalesCountryDriver {
+	public static void main(String[] args) {
+		JobClient my_client = new JobClient();
+		JobConf job_conf = new JobConf(SalesCountryDriver.class);
+		job_conf.setJobName("SalePerCountry");
+		job_conf.setOutputKeyClass(Text.class);
+		job_conf.setOutputValueClass(IntWritable.class);
+		job_conf.setMapperClass(SalesMapper.class);
+		job_conf.setReducerClass(SalesCountryReducer.class);
+		job_conf.setInputFormat(TextInputFormat.class);
+		job_conf.setOutputFormat(TextOutputFormat.class);
+		FileInputFormat.setInputPaths(job_conf, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job_conf, new Path(args[1]));
+		my_client.setConf(job_conf);
+		try {
+			JobClient.runJob(job_conf);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+              </pre>
+              <h5 class="card-title">SalesCountryReducer.java</h5>
+              <pre>
+import java.io.IOException;
+import java.util.*;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.*;
+
+public class SalesCountryReducer extends MapReduceBase implements Reducer&lt;Text, IntWritable, Text, IntWritable&gt; {
+	public void reduce(Text t_key, Iterator&lt;IntWritable> values, OutputCollector&lt;Text,IntWritable&gt; output, Reporter reporter) throws IOException {
+		Text key = t_key;
+		int frequencyForCountry = 0;
+		while (values.hasNext()) {
+			IntWritable value = (IntWritable) values.next();
+			frequencyForCountry += value.get();	
+		}
+		output.collect(key, new IntWritable(frequencyForCountry));
+	}
+}
+
+              </pre>
+              <h5 class="card-title">Download Dataset : </h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/shaik1729/GuessTheNumber/main/bda_dataset/SalesJan2009.csv
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+$ jar cf sales.jar *.class
+$ hadoop fs -mkdir -p /user/hadoop/sales/input/
+$ hadoop fs -put -f SalesJan2009.csv /user/hadoop/sales/input/
+$ hadoop fs -ls /user/hadoop/sales/input/
+$ hadoop fs -cat /user/hadoop/whether/input/SalesJan2009.csv
+$ hadoop jar sales.jar SalesCountryDriver /user/hadoop/sales/input /user/hadoop/sales/output
+$ hadoop fs -cat /user/hadoop/sales/output/part-00000
+
+              </pre>
+              <h5 class="card-title">Output :</h5>
+              <pre>
+Argentina	1
+Australia	38
+Austria	7
+Bahrain	1
+Belgium	8
+Bermuda	1
+Brazil	5
+Bulgaria	1
+CO	1
+Canada	76
+Cayman Isls	1
+China	1
+Costa Rica	1
+Country	1
+Czech Republic	3
+Denmark	15
+Dominican Republic	1
+Finland	2
+France	27
+Germany	25
+Greece	1
+Guatemala	1
+Hong Kong	1
+Hungary	3
+Iceland	1
+India	2
+Ireland	49
+Israel	1
+Italy	15
+Japan	2
+Jersey	1
+Kuwait	1
+Latvia	1
+Luxembourg	1
+Malaysia	1
+Malta	2
+Mauritius	1
+Moldova	1
+Monaco	2
+Netherlands	22
+New Zealand	6
+Norway	16
+Philippines	2
+Poland	2
+Romania	1
+Russia	1
+South Africa	5
+South Korea	1
+Spain	12
+Sweden	13
+Switzerland	36
+Thailand	2
+The Bahamas	2
+Turkey	6
+Ukraine	1
+United Arab Emirates	6
+United Kingdom	100
+United States	462
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 7 Develop a MapReduce program to find the min and max marks of student’s.</h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">ClassScore.java</h5>
+              <pre>
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Partitioner;
+import org.apache.hadoop.mapreduce.Mapper.Context;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+public class ClassScore {
+    private static String SPACE = "\t";
+    public static class Map extends
+
+    Mapper&lt;LongWritable, Text, Text, Text&gt; {
+
+        //Implement map function 
+        private Text word1=new Text("score");
+
+        private Text word2=new Text("distribution");
+        public void map(LongWritable key, Text value, Context context)
+
+        throws IOException, InterruptedException {
+
+             String line = value.toString();
+
+             StringTokenizer tokenizerArticle = new StringTokenizer(line);  
+            while (tokenizerArticle.hasMoreElements()) {
+                String  strName = tokenizerArticle.nextToken();//score part
+                String  strScore = tokenizerArticle.nextToken();
+                String  namescore=strName+SPACE+strScore;
+                context.write(word1,new Text(namescore));
+                context.write(word2,new Text(namescore));
+            }
+
+        }
+
+    }
+
+
+    public static class GenderPartitioner extends Partitioner&lt;Text, Text&gt; {
+
+        public int getPartition(Text key, Text value, int numReduceTasks) {
+            String[] namescore = value.toString().split(SPACE);
+
+            int score = Integer.parseInt(namescore[1]);
+            String str = key.toString();
+            //Assign partition 0 by default 
+           //if (numReduceTasks == 0)
+             //  return 0;
+            if("distribution".equals(str))
+            {
+            if ((score>= 90)&&(score <=100)) {
+                return 1 %  numReduceTasks ;
+            }else if((score >=80)&&(score< 90)) { 
+                return 2 %  numReduceTasks;
+            }else if((score >=70)&&(score< 80)){
+                return 3 % numReduceTasks; 
+            }else if((score >= 60)&&(score< 70)){
+                return 4 % numReduceTasks;
+            }else{
+                return 5 % numReduceTasks;
+            }
+                }
+            else 
+            {
+                return 0;   
+            }
+        }
+    }
+
+    public static class Reduce extends
+
+    Reducer&lt;Text, Text, Text, IntWritable&gt; {
+        public void reduce(Text key, Iterable&lt;Text&gt; values,
+
+        Context context) throws IOException, InterruptedException {
+           String  ss=key.toString();
+            if("score".equals(ss))
+            {
+            int sum = 0;
+            int count = 0;
+            int min    =    150   ;  
+            int max    =    0   ;
+            //int i=0;
+            int score  =    0   ;
+            String name1 =   " ";
+            String name2 =   " ";
+            List&lt;String&gt; cache =new ArrayList&lt;String&gt;();
+
+            for (Text val : values) {
+                cache.add(val.toString());
+                String[] valTokens = val.toString().split(SPACE);
+                score = Integer.parseInt(valTokens[1]);
+                if (score > max) {
+                    //name1 = valTokens[0];
+                     max  = score;
+                }
+                if (score < min)
+                {
+                    min   =score;
+                }
+                sum+=score;
+                count++;
+            }
+            int average = (int) sum/count;//calculate average score 
+            if(sum%count>=(count/2))
+                average+=1;
+            context.write(new Text("The average is"), new IntWritable(average));
+
+            context.write(new Text("The min score is"), new IntWritable(min));
+
+            for (String val : cache) {
+                String[] valTokens = val.split(SPACE);
+                score = Integer.parseInt(valTokens[1]);
+                if(score==min)
+                {
+                     name2 = valTokens[0];
+                    context.write(new Text(name2),new IntWritable(min));
+                }
+            }
+            context.write(new Text("The max score is"), new IntWritable(max));
+            for (String val : cache) {
+                String[] valTokens = val.split(SPACE);
+                score = Integer.parseInt(valTokens[1]);
+                if(score==max)
+                {
+                       name1 = valTokens[0];
+                      context.write(new Text(name1),new IntWritable(max));
+                }
+            }
+
+            }
+            else
+            {
+                 String nname  =" "  ;
+                 int score     =0   ;
+                for (Text val : values) {
+                    String[] valTokens = val.toString().split(SPACE);
+                    nname = valTokens[0];
+                    score = Integer.parseInt(valTokens[1]);
+                    context.write(new Text(nname), new IntWritable(score));
+                    }
+            }
+        }
+
+
+
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Configuration conf = new Configuration();
+        String[] otherArgs = new GenericOptionsParser(conf, args)
+                .getRemainingArgs();
+
+        if (otherArgs.length != 2) { //Determine whether the path parameter is 2
+
+            System.err.println("Usage: Data Deduplication &lt;in&gt; &lt;out&gt;");
+
+            System.exit(2);
+
+        }
+
+        //set maprduce job name
+        Job job = new Job(conf, "ClassScore");
+
+        job.setJarByClass(ClassScore.class);
+
+        //Set the Map, Combine and Reduce processing classes
+
+        job.setMapperClass(Map.class);
+
+
+
+        job.setReducerClass(Reduce.class);
+
+        job.setMapOutputKeyClass(Text.class);
+
+        job.setMapOutputValueClass(Text.class);
+
+        job.setOutputKeyClass(Text.class);
+
+        job.setOutputValueClass(IntWritable.class);
+
+        job.setPartitionerClass(GenderPartitioner.class);
+
+        job.setNumReduceTasks(6);
+
+        FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
+
+        FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
+
+    }
+
+}
+
+              </pre>
+              <h5 class="card-header">data set : data.txt</h5>
+              <pre>
+ALLUGUNTI 50
+RAKESH 35
+SRAVANI 87
+MANISHA 65
+NIKHITHA 94
+              </pre>
+              <h5 class="card-header">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf sg.jar *.class
+
+$ hadoop fs -mkdir -p /user/hadoop/sg/input/
+
+$ hadoop fs -put -f data.txt /user/hadoop/sg/input/
+
+$ hadoop fs -ls /user/hadoop/sg/input/
+
+$ hadoop jar sg.jar ClassScore /user/hadoop/sg/input /user/hadoop/sg/output
+
+$ hadoop fs -cat /user/hadoop/sg/output/part-r-00000
+              </pre>
+              <h5 class="card-header">output :</h5>
+              <pre>
+The average is	 	66
+The min score is 	35
+RAKESH 			35
+The max score is 	94
+NIKHITHA 			94
+              </pre>
+
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 8 Develop a MapReduce to find the maximum electrical consumption in each year given electrical consumption for each month in each year.
+            </h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">Elect_Driver.java</h5>
+              <pre>
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+
+public class Elect_Driver {
+
+	public static void main(String[] args) throws Exception {
+		Configuration conf = new Configuration();
+		Job job = Job.getInstance(conf, "JobName");
+		job.setJarByClass(Elect_Driver.class);
+		job.setMapperClass(Elect_Mapper.class);
+		job.setReducerClass(Elect_Reducer.class);
+		// TODO: specify output types
+	
+		job.setMapOutputKeyClass(IntWritable.class);
+		job.setMapOutputValueClass(Text.class);
+		job.setOutputKeyClass(IntWritable.class);
+		job.setOutputValueClass(IntWritable.class);
+
+		// TODO: specify input and output DIRECTORIES (not files)
+		FileInputFormat.setInputPaths(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+		if (!job.waitForCompletion(true))
+			return;
+	}
+
+}
+
+              </pre>
+              <h5 class="card-title">Elect_Mapper.java</h5>
+              <pre>
+import java.io.IOException;
+import java.util.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.*;
+
+public class Elect_Mapper extends Mapper&lt;LongWritable, Text, IntWritable, Text&gt; {
+    private IntWritable key=new IntWritable();
+
+
+    int minmon=0;
+    protected void setup(org.apache.hadoop.mapreduce.Mapper.Context context)
+            throws IOException, InterruptedException {
+       
+        super.setup(context);
+        BufferedReader br=new BufferedReader( new InputStreamReader(new FileInputStream("/home/hadoop/hadoop/ec/Big-Data-Analytics/Mini Project/elect.txt")));
+        String s1;
+        int i=0,c=0;
+        int year=0;
+        int jan=0;
+        int feb=0;
+        int mar=0,apr=0,may=0,jun=0,jul=0,aug=0,sep=0,oct=0,nov=0,dec=0;
+        HashMap&lt;String,String&gt; hm=new HashMap();
+        while((s1=br.readLine())!=null)
+        {
+        	//System.out.println(s1);
+        String s2[]=s1.split("   ");
+      /* jan+=Integer.parseInt(s2[1]);
+       feb+=Integer.parseInt(s2[2]);
+       mar+=Integer.parseInt(s2[3]);
+       apr+=Integer.parseInt(s2[4]);
+       may+=Integer.parseInt(s2[5]);
+       jun+=Integer.parseInt(s2[6]);
+       jul+=Integer.parseInt(s2[7]);
+       aug+=Integer.parseInt(s2[8]);
+       sep+=Integer.parseInt(s2[9]);
+       oct+=Integer.parseInt(s2[10]);
+       nov+=Integer.parseInt(s2[11]);
+       dec+=Integer.parseInt(s2[12]);*/
+        
+       //System.out.println(s2[1]);
+       //hm.put(s2[0],s2[1]+s2[2]+s2[3]+s2[4]+s2[5]+s2[6]+s2[7]+s2[8]+s2[9]+s2[10]+s2[11]+s2[12]);
+       c++;
+        }
+        jan/=c;
+        feb/=c;
+        mar/=c;
+        apr/=c;
+        may/=c;
+        jun/=c;
+        jul/=c;
+        aug/=c;
+        sep/=c;
+        oct/=c;
+        nov/=c;
+        dec/=c;
+       
+    }
+    public void map(LongWritable ikey, Text ivalue, Context context)
+            throws IOException, InterruptedException {
+        String line=ivalue.toString();
+        String[] tokens=StringUtils.split(line,' ');
+        key.set(Integer.parseInt(tokens[0]));
+        Text t = new Text(Integer.parseInt(tokens[1])+" "+Integer.parseInt(tokens[2])
+        		+" "+Integer.parseInt(tokens[3])+" "+Integer.parseInt(tokens[4])
+        		+" "+Integer.parseInt(tokens[5])+" "+Integer.parseInt(tokens[6])
+        		+" "+Integer.parseInt(tokens[7])+" "+Integer.parseInt(tokens[8])
+        		+" "+Integer.parseInt(tokens[9])+" "+Integer.parseInt(tokens[10])
+        		+" "+Integer.parseInt(tokens[11])+" "+Integer.parseInt(tokens[12]));
+        //System.out.println(t);
+        context.write(key,t);
+    }
+
+}
+
+              </pre>
+              <h5 class="card-title">Elect_Reducer.java</h5>
+              <pre>
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+
+public class Elect_Reducer extends Reducer&lt;IntWritable,Text,String,String&gt; {
+
+	 static int maxelect=1000;
+	 static int max=0,min=500000;
+	  static int maxyear,minyear,mi=0,ma=0;
+	 static float avg=0;
+	 static int jan=0;
+     static int feb=0;
+     static int mar=0,apr=0,may=0,jun=0,jul=0,aug=0,sep=0,oct=0,nov=0,dec=0;
+     int a=0;
+    public void reduce(IntWritable _key, Iterable&lt;Text&gt; values, Context context)
+            throws IOException, InterruptedException {
+        // process values
+       
+        Iterator&lt;Text&gt; iterator=values.iterator();
+        Text b=new Text(iterator.next());
+        String br=""+b;
+        String s[]=br.split(" ");
+        
+        
+        //System.out.println(s[1]);
+        int c=0;
+        //while(c++!=1000)
+       // {
+        	jan+=Integer.parseInt(s[0]);
+        	feb+=Integer.parseInt(s[1]);
+        	mar+=Integer.parseInt(s[2]);
+        	apr+=Integer.parseInt(s[3]);
+        	may+=Integer.parseInt(s[4]);
+        	jun+=Integer.parseInt(s[5]);
+        	jul+=Integer.parseInt(s[6]);
+        	aug+=Integer.parseInt(s[7]);
+        	sep+=Integer.parseInt(s[8]);
+        	oct+=Integer.parseInt(s[9]);
+        	nov+=Integer.parseInt(s[10]);
+        	dec+=Integer.parseInt(s[11]);
+        	a=Integer.parseInt(s[0])+Integer.parseInt(s[1])+Integer.parseInt(s[2])
+        			+Integer.parseInt(s[3])+Integer.parseInt(s[4])+Integer.parseInt(s[5])
+        			+Integer.parseInt(s[6])+Integer.parseInt(s[7])+Integer.parseInt(s[8])
+        			+Integer.parseInt(s[9])+Integer.parseInt(s[10])+Integer.parseInt(s[11]);
+        	
+       // }
+        //System.out.println(jan+" "+feb+" "+mar+" "+apr+" "+may+" "+jun+" "+jul+" "+aug+" "+sep+" "+oct+" "+nov+" "+dec);
+       
+        avg+=a;
+        
+        if(a>max)
+        	{max=a;
+        	maxyear=_key.get();
+        	//System.out.println(maxyear);
+        	}
+        if(a<min)
+    	{min=a;
+    	minyear=_key.get();
+    	//System.out.println(maxyear);
+    	}
+        maxelect--;
+        
+       
+       
+        if(maxelect==0)
+        {
+
+        	 IntWritable maxx=new IntWritable(max);
+             IntWritable minn=new IntWritable(min);
+        	
+        	int arr[]={jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec};
+        	//System.out.println(arr[0]);
+        	String min=findmin(arr);
+        	String max=findmax(arr);
+        	String mini[]=min.split(" ");
+        	String maxi[]=max.split(" ");
+        //System.out.println("t1"+maxyear);
+        avg=avg/1000;
+        //context.write(new IntWritable(),new IntWritable(avg));
+        context.write("Year : "+new IntWritable(maxyear)+" has the maximum annual consumption of "+maxx
+        +"\nYear : "+new IntWritable(minyear)+" has the minimum annual consumption of "+minn,
+        		
+        		"\nThe month of "+mini[1]+" has the minimum total consumption of "+mini[0]+" (monthwise)"
+        		+"\nThe month of "+maxi[1]+" has the maximum total consumption of "+maxi[0]+" (monthwise)"
+        		+"\nThe average annual consumption is : "+avg+"\n"
+        		+"The month of "+mini[1]+" has the minimum average consumption of "+Float.parseFloat(mini[0])/1000
+        		+"\nThe month of "+maxi[1]+" has the maximum average consumption of "+Float.parseFloat(maxi[0])/1000);
+        }
+    }
+    
+    public static String findmin(int[] array){  
+        int minValue = array[0]; 
+        int index=0;
+        String min="";
+        for(int i=1;i<array.length;i++){  
+        if(array[i] < minValue){  
+        minValue = array[i];
+        index=i;
+           }
+        
+        }
+        switch(index)
+        {
+        case 0:min="January";break;
+        case 1:min="February";break;
+        case 2:min="March";break;
+        case 3:min="April";break;
+        case 4:min="May";break;
+        case 5:min="June";break;
+        case 6:min="July";break;
+        case 7:min="August";break;
+        case 8:min="September";break;
+        case 9:min="October";break;
+        case 10:min="November";break;
+        case 11:min="December";break;
+        
+        
+        }
+
+       return minValue+" "+min ;  
+   }
+    public static String findmax(int[] array){  
+        int maxValue = array[0]; 
+        int index=0;
+        String max="";
+        for(int i=1;i<array.length;i++){  
+        if(array[i] > maxValue){  
+        maxValue = array[i];
+        index=i;
+           }
+        
+        }
+        switch(index)
+        {
+        case 0:max="January";break;
+        case 1:max="February";break;
+        case 2:max="March";break;
+        case 3:max="April";break;
+        case 4:max="May";break;
+        case 5:max="June";break;
+        case 6:max="July";break;
+        case 7:max="August";break;
+        case 8:max="September";break;
+        case 9:max="October";break;
+        case 10:max="November";break;
+        case 11:max="December";break;
+        
+        
+        }
+
+       return maxValue+" "+max ;  
+   }  
+    
+
+}
+              </pre>
+              <h5 class="card-title">Download Dataset : </h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/parshva45/Big-Data-Analytics/master/Mini%20Project/elect.txt
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf ec.jar *.class
+
+$ hadoop fs -mkdir -p /user/hadoop/ec/input/
+
+$ hadoop fs -put -f elect.txt /user/hadoop/ec/input/
+
+$ hadoop fs -ls /user/hadoop/ec/input/
+
+$ hadoop jar ec.jar Elect_Driver /user/hadoop/ec/input /user/hadoop/ec/output
+
+$ hadoop fs -cat /user/hadoop/ec/output/part-r-00000
+
+              </pre>
+              <h5 class="card-title">output :</h5>
+              <pre>
+Year : 1303 has the maximum annual consumption of 9319
+Year : 1438 has the minimum annual consumption of 3475	
+The month of July has the minimum total consumption of 539950 (monthwise)
+The month of February has the maximum total consumption of 558107 (monthwise)
+The average annual consumption is : 6600.832
+The month of July has the minimum average consumption of 539.95
+The month of February has the maximum average consumption of 558.107
+
+              </pre>
+
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 9 Develop a MapReduce program to find the tags associated with each movie by analyzing movie lens data.
+            </h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">averageRatingMapper.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+// input data from   ****userAgeOccupationGenreRatingReducer
+
+
+public class averageRatingMapper extends Mapper&lt;Object,Text,Text,Text&gt; {
+	
+	//data format => age::occupation::genre             rating      (tab delimited)
+	
+	@Override
+	public void map(Object key,Text value,Context context)throws IOException,InterruptedException
+	{
+		String []tokens = value.toString().split("\t");
+		
+		String age_occupation_genre = tokens[0];
+		
+		String rating = tokens[1];
+		
+		String splitAgain[] = tokens[0].split("::");
+		
+		long age = Long.parseLong(splitAgain[0]);
+		
+		if(age >=18)                                 //age groups to consider => 18+ only
+		{
+		
+		context.write(new Text(age_occupation_genre), new Text(rating));
+		
+		}
+	
+	}
+	
+	
+}
+
+              </pre>
+              <h5 class="card-title">averageRatingReducer.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+
+
+public class averageRatingReducer extends Reducer &lt;Text,Text,Text,Text&gt;{
+	
+	@Override
+	public void reduce(Text key,Iterable&lt;Text&gt;values,Context context)throws IOException,InterruptedException
+	{
+		//key                  value (ratings)
+	//age::occupation::genre    [ 1, 4 ,2,3,5,5,5 .......]
+	
+	//one user watching multiple movies
+      
+		double avg = 0.0;
+        double sum = 0.0;
+        long count = 0;
+		
+		for(Text val:values)
+		{
+			String temp = val.toString();
+		    long rating = Long.parseLong(temp);
+			
+		    sum+=rating; 
+			count++;
+			
+			
+		}
+		
+		avg = sum/count;
+		
+		String average_rating = String.valueOf(avg);
+		
+		context.write(new Text(average_rating), new Text(key));
+		
+	}
+	
+
+}
+
+              </pre>
+              <h5 class="card-title">dataReducer.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import java.util.*;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+public class dataReducer extends Reducer&lt;Text,Text,Text,Text&gt;{
+	
+	
+	// here we are getting input from  ***movieDataMapper*** and ***ratingDataMapper***
+	
+	
+	@Override
+	public void reduce(Text key, Iterable&lt;Text&gt;values,Context context)throws IOException,InterruptedException
+	{ 
+		
+	 //key                   value
+	// movie-id           [ Adventure|comedy_movies , 23:1_ratings .... ]
+
+		String genre = null;
+		
+		//for a given movie_id there can be only one genre and multiple users so
+		//using list to store => age:occupation
+		ArrayList&lt;String&gt; arr = new ArrayList&lt;String&gt;();
+		
+		
+		for(Text val:values)
+		{
+			String []tokens = val.toString().split("_");
+			
+			if(tokens[1].equals("movie"))    //from movieDataMapper
+			{
+				genre = tokens[0];      //we must know the genre first to write the data
+				
+			 }
+		
+			else if(tokens[1].equals("ratings"))  //from ratingDataMapper
+			{
+				arr.add(tokens[0]);
+				
+			
+			}
+		
+			
+		}
+		
+		for(String val:arr)
+		{
+			
+			String []splitAgain = val.split(":");
+			String user_id = splitAgain[0];
+			String rating = splitAgain[1];
+			
+			context.write(new Text(user_id), new Text(genre+"::"+rating));
+		}
+
+	}
+}
+
+              </pre>
+              <h5 class="card-title">movieDataMapper.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+
+public class movieDataMapper extends Mapper &lt;Object,Text,Text,Text&gt;{
+	
+	//data from movie.dat
+	
+	//data format => MovieID::Title::Genres
+	
+	@Override
+	public void map(Object key,Text value,Context context)throws IOException,InterruptedException
+	{
+		String []tokens = value.toString().split("::");
+		
+		String movie_id = tokens[0];
+		
+		String genre = tokens[2].trim();
+		
+		context.write(new Text(movie_id), new Text(genre+"_movie"));
+	}
+}
+
+              </pre>
+              <h5 class="card-title">ratingDataMapper.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.IOException;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+
+public class ratingDataMapper extends Mapper&lt;Object,Text,Text,Text&gt; {
+
+	//data from rating.dat
+	
+	//data format => UserID::MovieID::Rating::Timestamp
+	
+		@Override
+		public void map(Object key,Text value,Context context)throws IOException,InterruptedException
+		{
+			
+			String []tokens = value.toString().split("::");
+			
+			String user_id = tokens[0];
+			
+			String movie_id = tokens[1];
+			
+			
+			String star_rating = tokens[2];
+			
+			context.write(new Text(movie_id), new Text(user_id+":"+star_rating+"_ratings"));
+		}
+}
+
+              </pre>
+              <h5 class="card-title">userAgeOccupationGenreRatingReducer.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import java.util.*;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+public class userAgeOccupationGenreRatingReducer extends Reducer&lt;Text,Text,Text,Text&gt; {
+
+	//key              values
+	//user_id         [ genre::rating_file2   ,  age::occupation_file1 .....]
+	
+	
+	@Override
+	public void reduce(Text key,Iterable&lt;Text&gt; values,Context context)throws IOException,InterruptedException
+	{
+		String age = null;
+		String occupation = null;
+		
+		
+		//for a user_id , there can be only one age::occupation and multiple genres::rating
+		//ArrayList to store => genre::rating
+		ArrayList&lt;String&gt; arr2 = new ArrayList&lt;String&gt;();
+		
+		for(Text val:values)
+		{
+			String []tokens = val.toString().split("_");
+			String file = tokens[1];
+			
+			
+			
+			if(file.equals("file1"))  //means data from userDataMapper
+			{
+				String []splitAgain = tokens[0].split("::");
+				age = splitAgain[0];       
+				occupation = splitAgain[1];
+				
+			}
+			
+			else if(file.equals("file2"))  //means data from userGenreRatingMapper
+			{
+				
+				arr2.add(tokens[0]);
+				
+			}
+			
+			
+		}
+		
+		
+		
+		for(String val:arr2)
+		{   
+			String []splitAgain2 = val.toString().split("::");
+			String genre = splitAgain2[0];
+			String rating = splitAgain2[1];
+		
+			
+			context.write(new Text(age+"::"+occupation+"::"+genre), new Text(rating));
+		
+		}
+		
+	}
+	
+}
+
+              </pre>
+              <h5 class="card-title">Driver3.java</h5>
+              <pre>
+package KPI_3;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class Driver3 {
+
+    public static void main(String[] args) throws Exception {
+        Path inputPath_1 = new Path(args[0]);
+        Path inputPath_2 = new Path(args[1]);
+
+        Path outputPath_1 = new Path(args[2]);
+        Path inputPath_3 = new Path(args[3]);
+
+        Path outputPath_2 = new Path(args[4]);
+
+        Path finalOutput = new Path(args[5]);
+
+        Configuration conf = new Configuration();
+
+        Job job = Job.getInstance(conf, "first job");
+
+        // set Driver class
+        job.setJarByClass(Driver3.class);
+
+        // output format for mapper
+        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputValueClass(Text.class);
+
+        // output format for reducer
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        // use MultipleOutputs and specify different Mapper classes and Input formats
+        MultipleInputs.addInputPath(job, inputPath_1, TextInputFormat.class, movieDataMapper.class);
+        MultipleInputs.addInputPath(job, inputPath_2, TextInputFormat.class, ratingDataMapper.class);
+
+        // set Reducer class
+        job.setReducerClass(dataReducer.class);
+
+        FileOutputFormat.setOutputPath(job, outputPath_1);
+
+        job.waitForCompletion(true);
+
+        Job job1 = Job.getInstance(conf, "Second job");
+
+        job1.setJarByClass(Driver3.class);
+        // set Driver class
+
+        // use multipleOutputs and specify different mapper classes
+        MultipleInputs.addInputPath(job1, outputPath_1, TextInputFormat.class, userGenreRatingMapper.class);
+        MultipleInputs.addInputPath(job1, inputPath_3, TextInputFormat.class, userDataMapper.class);
+
+        // output format for mapper
+        job1.setMapOutputKeyClass(Text.class);
+        job1.setMapOutputValueClass(Text.class);
+
+        job1.setOutputKeyClass(Text.class);
+        job1.setOutputValueClass(Text.class);
+
+        // set reducer class
+        job1.setReducerClass(userAgeOccupationGenreRatingReducer.class);
+
+        FileOutputFormat.setOutputPath(job1, outputPath_2);
+
+        job1.waitForCompletion(true);
+
+        Job job2 = Job.getInstance(conf, "Third job");
+
+        job2.setJarByClass(Driver3.class);
+
+        job2.setMapperClass(averageRatingMapper.class);
+        job2.setReducerClass(averageRatingReducer.class);
+
+        job2.setMapOutputKeyClass(Text.class);
+        job2.setMapOutputValueClass(Text.class);
+
+        job2.setOutputKeyClass(Text.class);
+        job2.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(job2, outputPath_2);
+        FileOutputFormat.setOutputPath(job2, finalOutput);
+
+        job2.waitForCompletion(true);
+
+    }
+}
+              </pre>
+              <h5 class="card-title">userDataMapper.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+
+public class userDataMapper extends Mapper&lt;Object,Text,Text,Text&gt; {
+
+	//data from user.dat
+	
+   //data format => UserID::Gender::Age::Occupation::Zip-code 
+	
+	
+	@Override
+	public void map(Object key,Text value,Context context)throws IOException,InterruptedException
+	{
+		String []tokens = value.toString().split("::");
+		
+		String user_id = tokens[0];
+		
+		String age = tokens[2];
+		
+		String occupation = tokens[3];
+		
+		
+		context.write(new Text(user_id), new Text(age+"::"+occupation+"_file1"));
+		             //user_id as key         // age::occupation as value
+		
+	}
+	
+}
+
+              </pre>
+              <h5 class="card-title">userGenreRatingMapper.java</h5>
+              <pre>
+package KPI_3;
+
+import java.io.*;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+// input data from *****dataReducer*****
+
+
+public class userGenreRatingMapper extends Mapper&lt;Object,Text,Text,Text&gt; {
+
+	//data format => user_id     genre::rating    (tab delimited)
+	
+	
+	@Override
+	public void map(Object key,Text value,Context context)throws IOException,InterruptedException
+	{
+		
+		String []tokens = value.toString().split("\t");    
+		String user_id  = tokens[0];
+		
+		
+		context.write(new Text(user_id), new Text(tokens[1]+"_file2"));
+		              //user_id             genre::rating      
+		
+	}
+}
+
+              </pre>
+              <h5 class="card-title">Download Dataset : </h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/srjsunny/Movie_Lens_Data-Analysis/master/dataSet/movies.dat
+
+$ wget https://raw.githubusercontent.com/srjsunny/Movie_Lens_Data-Analysis/master/dataSet/ratings.dat
+
+$ wget https://raw.githubusercontent.com/srjsunny/Movie_Lens_Data-Analysis/master/dataSet/users.dat
+
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf mt.jar *.class
+
+$ hadoop fs -mkdir -p /user/hadoop/mt/inp1/
+
+$ hadoop fs -mkdir -p /user/hadoop/mt/inp2/
+
+$ hadoop fs -mkdir -p /user/hadoop/mt/inp3/
+
+$ hadoop fs -put -f movies.dat /user/hadoop/mt/inp1/
+
+$ hadoop fs -put -f ratings.dat /user/hadoop/mt/inp2/
+
+$ hadoop fs -put -f users.dat /user/hadoop/mt/inp3/
+
+$ hadoop jar mt.jar KPI_3.Driver3 /user/hadoop/mt/inp1 /user/hadoop/mt/inp2 /user/hadoop/mt/out1 /user/hadoop/mt/inp3 /user/hadoop/mt/out2 /user/hadoop/mt/ofi
+
+$ hadoop fs -cat /user/hadoop/mt/out1/part-r-00000
+
+$ hadoop fs -cat /user/hadoop/mt/out2/part-r-00000
+
+$ hadoop fs -cat /user/hadoop/mt/ofi/part-r-00000
+
+              </pre>
+              <h5 class="card-title">Output :</h5>
+              <pre>
+                ...
+3768	Crime::3
+3083	Crime::5
+5458	Crime::1
+4404	Crime::3
+hadoop9	Crime::3
+2038	Crime::4
+3095	Crime::1
+3031	Crime::4
+
+              </pre>
+              <pre>
+...
+25::15::Action|Adventure|Comedy|Sci-Fi	4
+25::15::Action|Thriller	3
+25::15::Crime|Drama|Romance|Thriller	3
+25::15::Action|Drama|War	2
+25::15::Drama|Romance	3
+25::15::Action|Sci-Fi|Thriller	5
+
+              </pre>
+              <pre>
+...
+3.0	56::9::Romance
+5.0	56::9::Romance|Thriller
+1.0	56::9::Sci-Fi
+5.0	56::9::Sci-Fi|War
+3.8	56::9::Thriller
+3.6666666666666665	56::9::Western
+              </pre>
+
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 10 XYZ.com is an online music website where users listen to various tracks, the data gets collected which is given below. 
+              The data is coming in log files and looks like as shown below. 
+              </h5>
+              
+            <div class="card-body">
+              <pre>
+UserId | TrackId | Shared | Radio | Skip 
+111115 | 222 | 0 | 1 | 0 
+111113 | 225 | 1 | 0 | 0 
+111117 | 223 | 0 | 1 | 1 
+111115 | 225 | 1 | 0 | 0 
+
+Write a MapReduce program to get the following  
+Number of unique listeners  
+Number of times the track was shared with others  
+Number of times the track was listened to on the radio  
+Number of times the track was listened to in total  
+Number of times the track was skipped on the radio
+
+              </pre>
+              <h5 class="card-title">MusicTrack.java</h5>
+              <pre>
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+//import java.util.*;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+public class MusicTrack
+{
+public static class MusicMapper extends Mapper&lt;Object,Text,Text,Text&gt;
+{
+    public void map(Object key,Text value,Context context) throws IOException,InterruptedException
+    {
+        String[] tokens=value.toString().split("\\|");
+        String trackid = /*"1";*/tokens[1];
+        String others = tokens[0]+"\t"+tokens[2]+"\t"+tokens[3]+"\t"+tokens[4];
+        context.write(new Text(trackid),new Text(others));
+    }
+}
+
+public static class MusicReduceer extends Reducer&lt;Text,Text,Text,Tex&gt;
+    {
+    public void reduce(Text Key,Iterable&lt;Text&gt; value,Context context) throws IOException,InterruptedException
+        {
+        
+        Set&lt;Integer&gt; userIdSet = new HashSet&lt;Integer&gt;();
+        int shared = 0;
+        int radio =0;
+        int skip= 0;
+        int listen=0;
+        
+        for(Text val:value)
+            
+        {
+                String[] valTokens = val.toString().split("\t");
+                
+                int sh = Integer.parseInt(valTokens[1]);
+                int ra = Integer.parseInt(valTokens[2]);
+                int sk = Integer.parseInt(valTokens[3]);
+                
+                shared = shared+sh;
+                radio=radio+ra;
+                skip=skip+sk;
+                listen = shared + radio;
+                
+                int cus = Integer.parseInt(valTokens[0]);
+                
+                userIdSet.add(cus);
+        
+        }
+        
+        IntWritable size = new IntWritable(userIdSet.size());
+
+    context.write(new Text(Key),new Text("customerId- "+size+"\t"+"Shared- "+shared+"\t"+"Radio- "+radio+"\t"+"Skipped- "+skip+"\t"+"Listen- "+listen));
+    }
+    
+}
+    public static void main(String args[]) throws Exception
+        {
+            Configuration conf=new Configuration();
+            Job job=new Job(conf,"MusicTrack");
+            job.setNumReduceTasks(1);
+            job.setJarByClass(MusicTrack.class);
+            job.setMapperClass(MusicMapper.class);
+            
+            job.setReducerClass(MusicReduceer.class);
+            
+            job.setOutputKeyClass(Text.class);
+            job.setOutputValueClass(Text.class);
+            job.setInputFormatClass(TextInputFormat.class);
+            job.setOutputFormatClass(TextOutputFormat.class);
+            Path outputpath= new Path(args[1]);
+            FileInputFormat.addInputPath(job,new Path(args[0]));
+            FileOutputFormat.setOutputPath(job,new Path(args[1]));
+            outputpath.getFileSystem(conf).delete(outputpath,true);
+            System.exit(job.waitForCompletion(true)?0:1);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">Dataset : data.txt</h5>
+              <pre>
+UserId | TrackId | Shared | Radio | Skip 
+111115 | 222 | 0 | 1 | 0 
+111113 | 225 | 1 | 0 | 0 
+111117 | 223 | 0 | 1 | 1 
+111115 | 225 | 1 | 0 | 0
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf music.jar *.class
+
+$ hadoop fs -mkdir -p /user/hadoop/music/input/
+
+$ hadoop fs -put -f data.txt /user/hadoop/music/input/
+
+$ hadoop jar music.jar MusicTrack /user/hadoop/music/input /user/hadoop/music/output
+
+$ hadoop fs -cat /user/hadoop/music/output/part-r-00000
+
+              </pre>
+              <h5 class="card-title">output :</h5>
+              <pre>
+17/08/05 15:25:16 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+225     1
+521     1
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 11 Develop a MapReduce program to find the frequency of books published eachyear and find in which year maximum number of books were published usingthe following data. 
+            </h5>
+              
+            <div class="card-body">
+              <table>
+                <td>Title</td> 
+                <td>Author</td>
+                <td>Published year</td>
+                <td>Author country</td>
+                <td>Language</td>
+                <td>No of pages</td>
+              </table>
+              <h5 class="card-title">MainDriver.java</h5>
+              <pre>
+package com.mapreduce.classes;
+
+import java.io.IOException;
+
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.TextInputFormat;
+import org.apache.hadoop.mapred.TextOutputFormat;
+import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.mapred.FileOutputFormat;
+import org.apache.hadoop.mapred.JobClient;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.util.Tool;
+
+public class MainDriver extends Configured implements Tool {
+        
+
+        static int printUsage() {
+                System.out
+                                .println("BookPubicationAnalysis [-m &lt;maps&gt;] [-r &lt;reduces>] &lt;RatingssDetailInput&gt; &lt;RatingsOutput&gt; &lt;BooksDetailsFile&gt; &lt;YOPOutput&gt;");
+                return 0;
+        }
+
+        @Override
+        public int run(String[] args) throws IOException {
+                return 0;
+        }
+
+        public static void main(String[] args) throws IOException {
+                //first Job to map the Book, yop and ratings from ratings Input file
+                JobConf conf = new JobConf(MainDriver.class);
+                conf.setJobName("BookPubicationAnalysisJOB1");
+
+                conf.setOutputKeyClass(Text.class);
+                conf.setOutputValueClass(Text.class);
+
+                conf.setMapperClass(RatingsMapper.class);
+                conf.setReducerClass(RatingsReducer.class);
+
+                conf.setInputFormat(TextInputFormat.class);
+                conf.setOutputFormat(TextOutputFormat.class);
+
+                FileInputFormat.setInputPaths(conf, new Path(args[0]));
+                FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+
+                JobClient.runJob(conf);
+                
+                //second program to map books, yop and ratings from Books Input file.
+                JobConf conf2 = new JobConf(MainDriver.class);
+                conf2.setJobName("BookPubicationAnalysisJOB2");
+
+                conf2.setOutputKeyClass(Text.class);
+                conf2.setOutputValueClass(Text.class);
+
+                conf2.setMapperClass(YOPMapper.class);
+                //conf2.setReducerClass(YOPReducer.class);
+
+                conf2.setInputFormat(TextInputFormat.class);
+                conf2.setOutputFormat(TextOutputFormat.class);
+
+                FileInputFormat.setInputPaths(conf2, new Path(args[2]));
+                FileOutputFormat.setOutputPath(conf2, new Path(args[3]));
+
+                JobClient.runJob(conf2);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">RatingsMapper.java</h5>
+              <pre>
+package com.mapreduce.classes;
+
+import java.io.IOException;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.Mapper;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reporter;
+
+public class RatingsMapper extends MapReduceBase implements
+                Mapper&lt;LongWritable, Text, Text, Text&gt; {
+        private Text isbn;
+        private Text rating;
+
+        @Override
+        public void map(LongWritable key, Text value,
+                        OutputCollector&lt;Text, Text&gt; output, Reporter reporter)
+                        throws IOException {
+                String[] rows = value.toString().split("\";\"");
+                isbn = new Text(rows[1]);// second field is ISBN Number of the book
+                rating = new Text("0000" + "\t"
+                                + rows[2].substring(0, rows[2].length() - 1));// third field
+                                                                                                                                // is rating
+                                                                                                                                // of the
+                                                                                                                                // book
+                output.collect(isbn, rating);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">RatingsReducer.java</h5>
+              <pre>
+package com.mapreduce.classes;
+
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reducer;
+import org.apache.hadoop.mapred.Reporter;
+
+public class RatingsReducer extends MapReduceBase implements
+Reducer&lt;Text, Text, Text, Text&gt; {
+@Override
+public void reduce(Text key, Iterator&lt;Text&gt; values,
+        OutputCollector&lt;Text, Text&gt; output, Reporter reporter)
+        throws IOException {
+
+Text redVal = new Text();
+int sum = 0;
+int count = 0;
+int avgRatings = 0;
+String yop = null;
+String[] tempVal = null;
+
+while (values.hasNext()) {
+        tempVal = (values.next().toString()).split("\t");
+        sum = sum + Integer.parseInt(tempVal[1]);
+        count++; 
+}
+
+avgRatings = Math.round(sum / count);
+yop = tempVal[0];
+redVal.set(yop + "\t" + avgRatings);
+System.out.println("-----------> Reducer Values : " + redVal);
+output.collect(key, redVal);
+}
+}
+
+              </pre>
+              <h5 class="card-title">YOPMapper.java</h5>
+              <pre>
+package com.mapreduce.classes;
+
+import java.io.IOException;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.Mapper;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reporter;
+
+public class YOPMapper extends MapReduceBase implements
+                Mapper&lt;LongWritable, Text, Text, Text&gt; {
+        private Text isbn;
+        private Text yop;
+
+        @Override
+        public void map(LongWritable key, Text value,
+                        OutputCollector&lt;Text, Text&gt; output, Reporter reporter)
+                        throws IOException {
+                String[] rows = value.toString().split("\";\"");
+                isbn = new Text(rows[0].substring(1));
+                yop = new Text(rows[3].substring(0, rows[3].length()) + "\t" + "00");
+                output.collect(isbn, yop);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">YOPReducer.java</h5>
+              <pre>
+package com.mapreduce.classes;
+
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reducer;
+import org.apache.hadoop.mapred.Reporter;
+
+public class YOPReducer extends MapReduceBase implements
+                Reducer&lt;Text, Text, Text, Text&gt; {
+        @Override
+        public void reduce(Text key, Iterator&lt;Text&gt; values,
+                        OutputCollector&lt;Text, Text&gt; output, Reporter reporter)
+                        throws IOException {
+
+                Text redVal = new Text();
+                int sum = 0;
+                int count = 0;
+                int avgRatings = 0;
+                String yop = null;
+                String[] tempVal = null;
+
+                while (values.hasNext()) {
+                        tempVal = (values.next().toString()).split("\t");
+                        sum = sum + Integer.parseInt(tempVal[1]);
+                        count++;
+                }
+
+                avgRatings = Math.round(sum / count);
+                yop = tempVal[0];
+                redVal.set(yop + "\t" + avgRatings);
+                System.out.println("-----------> Reducer Values : " + redVal);
+                output.collect(key, redVal);
+        }
+}
+
+              </pre>
+              <h5 class="card-title">Download Dataset : </h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/im-naren/BookPublicationAnalysis/master/input/books.csv
+
+$ wget https://raw.githubusercontent.com/im-naren/BookPublicationAnalysis/master/input/ratings.csv
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf books.jar com/
+
+$ hadoop fs -mkdir -p /user/hadoop/books/input/
+
+$ hadoop fs -put -f books.csv /user/hadoop/books/input/
+
+$ hadoop fs -put -f ratings.csv /user/hadoop/books/input/
+
+$ hadoop jar books.jar com/mapreduce/classes/MainDriver /user/hadoop/books/input/ratings.csv /user/hadoop/books/output_ratings /user/hadoop/books/input/books.csv /user/hadoop/books/ouput_books
+
+$ hdfs dfs -cat /user/hadoop/books/ouput_books/part-00000
+
+$ hdfs dfs -cat /user/hadoop/books/output_ratings/part-00000
+
+              </pre>
+
+              <h5 class="card-title">Output :</h5>
+              <pre>
+0002005018	2001	00
+0060973129	1991	00
+0195153448	2002	00
+0374157065	1999	00
+0393045218	1999	00
+0399135782	1991	00
+0425176428	2000	00
+0440234743	1999	00
+0671870432	1993	00
+0679425608	1996	00
+074322678X	2002	00
+0771074670	1988	00
+080652121X	2000	00
+0887841740	2004	00
+1552041778	1999	00
+1558746218	1998	00
+1567407781	1998	00
+1575663937	1999	00
+1881320189	1994	00
+
+
+0060517794	0000	9
+0155061224	0000	5
+034545104X	0000	0
+038550120X	0000	7
+0425115801	0000	0
+0446520802	0000	0
+0449006522	0000	0
+0451192001	0000	0
+052165615X	0000	3
+0521795028	0000	6
+0553561618	0000	0
+055356451X	0000	0
+0600570967	0000	6
+0609801279	0000	0
+0786013990	0000	0
+0786014512	0000	0
+2080674722	0000	0
+3257224281	0000	8
+342310538	0000	10
+
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 12 Develop a MapReduce program to analyze Titanic ship data and to find the average age of the people (both male and female) who died in the tragedy. How many persons are survived in each class. 
+            </h5>
+              
+            <div class="card-body">
+              <table>
+                <td>Column 1 :PassengerI d </td>
+                <td>Column 2 : Survived (survived=0 &died=1) </td>
+                <td>Column 3 :Pclass </td>
+                <td>Column 4 : Name </td>
+                <td>Column 5 : Sex </td>
+                <td>Column 6 : Age </td>
+                <td>Column 7 :SibSp </td>
+                <td>Column 8 :Parch </td>
+                <td>Column 9 : Ticket </td>
+                <td>Column 10 : Fare </td>
+                <td>Column 11 :Cabin </td>
+                <td>Column 12 : Embarked</td>
+                <td>The titanic data will be.. </td>
+
+              </table>
+              <h5 class="card-title">Average_age.java</h5>
+              <pre>
+import java.io.IOException;
+
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+           
+   public class Average_age {
+           
+    public static class Map extends Mapper&lt;LongWritable, Text, Text, IntWritable&gt; {
+       
+       private Text gender = new Text();
+       private IntWritable age = new IntWritable();    
+       public void map(LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
+           String line = value.toString();
+           String str[]=line.split(",");
+           if(str.length>6){
+               gender.set(str[4]);
+           if((str[1].equals("0")) ){   
+               if(str[5].matches("\\d+")){
+                   int i=Integer.parseInt(str[5]);
+                   age.set(i);
+
+               }
+        }
+     }
+     context.write(gender, age);
+
+      }       
+               
+    } 
+           
+    public static class Reduce extends Reducer&lt;Text,IntWritable, Text, IntWritable&gt; {
+   
+       public void reduce(Text key, Iterable&lt;IntWritable&gt; values, Context context) 
+         throws IOException, InterruptedException {
+           int sum = 0;
+           int l=0;
+           for (IntWritable val : values) {
+               l+=1;
+               sum += val.get();
+           }
+           sum=sum/l;
+           context.write(key, new IntWritable(sum));
+       }
+    }
+           
+    public static void main(String[] args) throws Exception {
+       Configuration conf = new Configuration();
+           
+           @SuppressWarnings("deprecation")
+        Job job = new Job(conf, "Averageage_survived");
+           job.setJarByClass(Average_age.class);
+       
+           job.setMapOutputKeyClass(Text.class);
+           job.setMapOutputValueClass(IntWritable.class);
+        //  job.setNumReduceTasks(0);
+       job.setOutputKeyClass(Text.class);
+       job.setOutputValueClass(IntWritable.class);
+           
+       job.setMapperClass(Map.class);
+       job.setReducerClass(Reduce.class);
+           
+       job.setInputFormatClass(TextInputFormat.class);
+       job.setOutputFormatClass(TextOutputFormat.class);
+           
+       FileInputFormat.addInputPath(job, new Path(args[0]));
+       FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        Path out=new Path(args[1]);
+        out.getFileSystem(conf).delete(out);
+       job.waitForCompletion(true);
+    }
+           
+  }
+
+              </pre>
+              <h5 class="card-title">Download Dataset : </h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/nttarun/Titanic-Data-Analysis/master/TitanicData.txt
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf  Average_age.jar *.class
+
+$ hadoop fs -mkdir -p /user/hadoop/titanic/input/
+
+$ hadoop fs -put -f TitanicData.txt /user/hadoop/titanic/input/
+
+$ hadoop jar Average_age.jar Average_age /user/hadoop/titanic/input /user/hadoop/titanic/output_Average_age
+
+$ hadoop fs -cat /user/hadoop/titanic/output_Average_age/part-r-00000
+
+              </pre>
+              <h5 class="card-title">output : </h5>
+              <pre>
+female	28
+male		30
+              </pre>
+              <h5 class="card-title">Average_fare.java</h5>
+              <pre>
+import java.io.IOException;
+
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+           
+   public class Average_fare {
+           
+    public static class Map extends Mapper&lt;LongWritable, Text, Text, FloatWritable&gt; {
+       
+       private Text pclass = new Text();
+       private FloatWritable fare = new FloatWritable();    
+       public void map(LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
+           String line = value.toString();
+           String str[]=line.split(",");
+           if(str.length>10){
+            pclass.set(str[2]);
+               if(str[9].matches("\\d+.+")){
+                   float i=Float.parseFloat(str[9]);
+                   fare.set(i);
+
+               }
+               context.write(pclass, fare);   
+     }
+     
+
+      }       
+               
+    } 
+           
+    public static class Reduce extends Reducer&lt;Text,FloatWritable, Text, FloatWritable&gt; {
+   
+       public void reduce(Text key, Iterable&lt;FloatWritable&gt; values, Context context) 
+         throws IOException, InterruptedException {
+           float sum = 0;
+           int l=0;
+           for (FloatWritable val : values) {
+               l+=1;
+               sum += val.get();
+           }
+           sum=sum/l;
+           context.write(key, new FloatWritable(sum));
+       }
+    }
+           
+    public static void main(String[] args) throws Exception {
+       Configuration conf = new Configuration();
+           
+           @SuppressWarnings("deprecation")
+        Job job = new Job(conf, "Averageage_survived");
+           job.setJarByClass(Average_fare.class);
+       
+           job.setMapOutputKeyClass(Text.class);
+           job.setMapOutputValueClass(FloatWritable.class);
+        //  job.setNumReduceTasks(0);
+       job.setOutputKeyClass(Text.class);
+       job.setOutputValueClass(FloatWritable.class);
+           
+       job.setMapperClass(Map.class);
+       job.setReducerClass(Reduce.class);
+           
+       job.setInputFormatClass(TextInputFormat.class);
+       job.setOutputFormatClass(TextOutputFormat.class);
+           
+       FileInputFormat.addInputPath(job, new Path(args[0]));
+       FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        Path out=new Path(args[1]);
+        out.getFileSystem(conf).delete(out);
+       job.waitForCompletion(true);
+    }
+           
+  }
+
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf  Average_fare.jar *.class
+
+$ hadoop jar Average_fare.jar Average_fare /user/hadoop/titanic/input /user/hadoop/titanic/output_Average_fare
+
+$ hadoop fs -cat /user/hadoop/titanic/output_Average_fare/part-r-00000
+
+              </pre>
+              <h5 class="card-title">Output :</h5>
+              <pre>
+1	84.99818
+2	21.659399
+3	13.975503
+              </pre>
+
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 13 Develop a MapReduce program to analyze Uber data set to find the days on which each basement has more trips using the following dataset.
+              </h5>
+              
+            <div class="card-body">
+            
+              <table>
+                <th>The Uber dataset consists of four columns they are</th>
+                <tr>
+                  <td>dispatching_base_number</td>
+                  <td>date active_vehicles</td>
+                  <td>trips</td>
+                </tr>
+              </table>
+
+              <h5 class="card-title">Uber.java</h5>
+              <pre>
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+public class Uber {
+public static class TokenizerMapper
+extends Mapper&lt;Object, Text, Text, IntWritable&gt;{
+java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM/dd/yyyy");
+String[] days ={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+private Text basement = new Text();
+Date date = null;
+private int trips;
+public void map(Object key, Text value, Context context
+) throws IOException, InterruptedException {
+String line = value.toString();
+String[] splits = line.split(",");
+basement.set(splits[0]);
+try {
+date = format.parse(splits[1]);
+} catch (ParseException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+}
+trips = new Integer(splits[3]);
+String keys = basement.toString()+ " " +days[date.getDay()];
+context.write(new Text(keys), new IntWritable(trips));
+}
+}
+public static class IntSumReducer
+extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; {
+private IntWritable result = new IntWritable();
+public void reduce(Text key, Iterable&lt;IntWritable&gt; values,
+Context context
+) throws IOException, InterruptedException {
+int sum = 0;
+for (IntWritable val : values) {
+sum += val.get();
+}
+result.set(sum);
+context.write(key, result);
+}
+}
+public static void main(String[] args) throws Exception {
+Configuration conf = new Configuration();
+Job job = Job.getInstance(conf, "Uber");
+job.setJarByClass(Uber.class);
+job.setMapperClass(TokenizerMapper.class);
+job.setCombinerClass(IntSumReducer.class);
+job.setReducerClass(IntSumReducer.class);
+job.setOutputKeyClass(Text.class);
+job.setOutputValueClass(IntWritable.class);
+FileInputFormat.addInputPath(job, new Path(args[0]));
+FileOutputFormat.setOutputPath(job, new Path(args[1]));
+System.exit(job.waitForCompletion(true) ? 0 : 1);
+}
+}
+
+              </pre>
+              <h5 class="card-title">Download Dataset :</h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/shukladiwakar/Mapreduce-for-Uber-Data-Analysis/master/uberdata
+              </pre>
+              <h5 class="card-title">commands for execution :</h5>
+              <pre>
+$ hadoop com.sun.tools.javac.Main *.java
+
+$ jar cf Uber.jar *.class
+
+$ hadoop fs -mkdir -p /user/hadoop/uber/input/
+
+$ hadoop fs -put -f uberdata /user/hadoop/uber/input/
+
+$ hadoop jar Uber.jar Uber /user/hadoop/uber/input /user/hadoop/uber/output
+
+$ hadoop fs -cat /user/hadoop/uber/output/part-r-00000
+
+              </pre>
+              <h5 class="card-title">Output :</h5>
+              <pre>
+B02512 Fri	16435
+B02512 Mon	11297
+B02512 Sat	15026
+B02512 Sun	10487
+B02512 Thu	15809
+B02512 Tue	12041
+B02512 Wed	12691
+B02598 Fri	93126
+B02598 Mon	60882
+B02598 Sat	94588
+B02598 Sun	66477
+B02598 Thu	90333
+B02598 Tue	63429
+B02598 Wed	71956
+B02617 Fri	125067
+B02617 Mon	80591
+B02617 Sat	127902
+B02617 Sun	91722
+B02617 Thu	118254
+B02617 Tue	86602
+B02617 Wed	94887
+B02682 Fri	114662
+B02682 Mon	74939
+B02682 Sat	120283
+B02682 Sun	82825
+B02682 Thu	106643
+B02682 Tue	76905
+B02682 Wed	86252
+B02764 Fri	326968
+B02764 Mon	214116
+B02764 Sat	356789
+B02764 Sun	249896
+B02764 Thu	304200
+B02764 Tue	221343
+B02764 Wed	241137
+B02765 Fri	34934
+B02765 Mon	21974
+B02765 Sat	36737
+B02765 Sun	22536
+B02765 Thu	30408
+B02765 Tue	22741
+B02765 Wed	24340
+
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 14 Develop a program to calculate the maximum recorded temperature by yearwise for the weather dataset in Pig Latin
+              </h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">Download Dataset :</h5>
+              <pre>
+$ wget https://raw.githubusercontent.com/pritambarlota/NCDC-weather-dataset-using-Hadoop-MapReduce-Pig-Hive/master/output1.txt
+
+              </pre>
+              <h5 class="card-title">Running pig commands</h5>
+              <pre>
+$ pig -x local
+
+grunt> records = LOAD '/home/hadoop/199f1a0565/pig_mrt/output1.txt' AS (year:chararray, temperature:int); 
+
+grunt> DUMP records; 
+
+grunt> grouped_records = GROUP records BY year; 
+
+grunt> DUMP grouped_records; 
+
+grunt> max_temp = FOREACH grouped_records GENERATE group, MAX(records.temperature); 
+
+grunt> DUMP max_temp;
+
+              </pre>
+
+              <h5 class="card-title">Output :</h5>
+              <pre>
+(1921,283)
+(1922,278)
+(1923,294)
+(1924,294)
+(1925,317)
+(1926,261)
+(1927,489)
+(1928,178)
+(1929,178)
+(1930,228)
+              </pre>
+
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 15 Write queries to sort and aggregate the data in a table using HiveQL.</h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">Make dataset : emo_data.csv</h5>
+              <pre>
+123,Den,11000,Raphaely
+124,Karen,2500,Colmenares
+125,Susan,6500,Mavris
+126,Jason,3300,Mallin
+127,Alexis,4100,Bull
+128,Kevin,3000,Feeney
+129,Curtis,3100,Davies
+130,John,2700,Seo
+131,Stephen,3200,Stiles
+132,Winston,3200,Taylor
+133,James,2500,Marlow
+134,Steven,2200,Markle
+135,James,2400,Landry
+136,Kevin,5800,Mourgos
+137,Donald,2600,OConnell
+138,Douglas,2600,Grant
+139,Girard,2800,Geoni
+140,Jean,3100,Fleaur
+141,David,4800,Austin
+
+              </pre>
+              <h5 class="card-title">Running HIVE commands : </h5>
+              <pre>
+$ hive
+
+hive> create table emp (Id int, Name string , Salary float, Department string)    
+	row format delimited    
+	fields terminated by ',' ;  
+
+hive> LOAD DATA LOCAL INPATH '/home/hadoop/199f1a0565/hive_sql/emp_data.csv' INTO TABLE emp;
+
+hive> SELECT * FROM emp;
+
+hive> select * from emp sort by salary desc; 
+
+              </pre>
+              <h5 class="card-title">Output :</h5>
+              <pre>
+123	Den		11000.0	Raphaely
+125	Susan	6500.0	Mavris
+136	Kevin	5800.0	Mourgos
+141	David	4800.0	Austin
+127	Alexis	4100.0	Bull
+126	Jason	3300.0	Mallin
+132	Winston	3200.0	Taylor
+131	Stephen	3200.0	Stiles
+129	Curtis	3100.0	Davies
+140	Jean		3100.0	Fleaur
+128	Kevin	3000.0	Feeney
+139	Girard	2800.0	Geoni
+130	John		2700.0	Seo
+137	Donald	2600.0	OConnell
+138	Douglas	2600.0	Grant
+133	James	2500.0	Marlow
+124	Karen	2500.0	Colmenares
+135	James	2400.0	Landry
+134	Steven	2200.0	Markle
+
+              </pre>
+
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">EXP : 16 Develop a Java application to find the maximum temperature using Spark.
+            </h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">Running Spark commands : </h5>
+              <pre>
+$ /usr/local/spark/bin/spark-shell --master "local[4]"
+
+scala > import scala.collection.mutable.HashMap
+
+scala > object MaxTempSpark{
+	var data = HashMap(
+		"Agra" -> 52,
+		"Allahabad" -> 51,
+		"Amritsar" -> 45,
+		"Bhopal" -> 51,
+		"Chandigarh" -> 47,
+		"Dehradun" -> 43,
+		"Indore" -> 50,
+		"Lucknow" -> 58
+	)
+	print(data.max)
+}
+
+scala > MaxTempSpark
+
+              </pre>
+              <h5 class="card-title">Output : </h5>
+              <pre>
+(Lucknow,58)res0: MaxTempSpark.type = MaxTempSpark$@190c2bbf
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="card">
+            <h5 class="card-header">References
+            </h5>
+              
+            <div class="card-body">
+              <h5 class="card-title">The above information is taken from : </h5>
+              <pre>
+                <ul>
+<li>https://github.com/marufaytekin/MatrixMultiply</li>
+<li>https://github.com/shask9/Matrix-Multiplication-Hadoop</li>
+<li>https://github.com/ishanthilina/Hadoop-Matrices-Multiplication</li>
+<li>https://github.com/ishanthilina/Hadoop-Matrices-Multiplication/tree/master/Input</li>
+<li>https://stackoverflow.com/questions/27099898/java-net-urisyntaxexception-when-starting-hive</li>
+<li>https://www.tabnine.com/code/java/methods/org.apache.hadoop.hive.metastore.HiveMetaException/%3Cinit%3E</li>
+<li>https://stackoverflow.com/questions/64662650/unknown-version-specified-for-initialization-3-1-0-schematool-failed</li>
+<li>https://community.cloudera.com/t5/Support-Questions/quot-org-apache-hadoop-hive-metastore-HiveMetaException/td-p/130476</li>
+<li>https://stackoverflow.com/questions/35449274/java-lang-runtimeexception-unable-to-instantiate-org-apache-hadoop-hive-ql-meta</li>
+<li>https://stackoverflow.com/questions/52783323/hive-throws-wstxparsingexception-illegal-character-entity-expansion-character</li>
+<li>https://github.com/pritambarlota/NCDC-weather-dataset-using-Hadoop-MapReduce-Pig-Hive</li>
+<li>https://github.com/pritambarlota/NCDC-weather-dataset-using-Hadoop-MapReduce-Pig-Hive/blob/master/output1.txt</li>
+<li>https://github.com/tomwhite/hadoop-book/blob/master/ch12-avro/src/main/java/oldapi/AvroGenericMaxTemperature.java</li>
+<li>https://www.wisdomjobs.com/e-university/hadoop-tutorial-484/an-example-to-write-hadoop-14864.html</li>
+<li>https://github.com/ledinhtri97/hadoop-mapreduce-maximum-month-temperature</li>
+<li>https://www.wisdomjobs.com/e-university/hadoop-tutorial-484/an-example-to-write-hadoop-14864.html</li>
+<li>https://www.guru99.com/create-your-first-hadoop-program.html</li>
+<li>https://github.com/srafay/Hadoop-hands-on</li>
+<li>https://github.com/vasanth-mahendran/weather-data-hadoop</li>
+<li>https://github.com/vasanth-mahendran/weather-data-hadoop/tree/master/dataset</li>
+<li>https://github.com/vasanth-mahendran/weather-data-hadoop/blob/master/dataset/sample_weather.txt</li>
+<li>https://github1s.com/vasanth-mahendran/weather-data-hadoop/blob/HEAD/src/main/java/com/org/vasanth/weather/Weather.java</li>
+<li>https://github.com/marufaytekin/MatrixMultiply</li>
+<li>https://github1s.com/marufaytekin/MatrixMultiply/blob/HEAD/src/main/java/com/lendap/hadoop/Reduce.java#L6</li>
+<li>https://github.com/shask9/Matrix-Multiplication-Hadoop</li>
+<li>https://sites.google.com/site/sraochintalapudi/big-data-analytics/hadoop-mapreduce-programs</li>
+<li>https://www.edureka.co/blog/mapreduce-tutorial/</li>
+<li>https://github.com/srjsunny/Movie_Lens_Data-Analysis</li>
+<li>https://futureskillsprime.in/courses/big-data-hadoop-first-virtual-lab</li>
+<li>https://my-learnings-about-hadoop.blogspot.com/2017/08/mapreduce-real-timeexamples.html</li>
+<li>https://pdfcoffee.com/hadoop-and-bigdata-lab-manual-1-1-pdf-free.html</li>
+<li>http://www.pace.ac.in/documents/cse/HADOOP%20&%20BIGDATA%20LAB.pdf</li>
+<li>https://my-learnings-about-hadoop.blogspot.com/2017/08/mapreduce-real-time-example-2.html</li>
+<li>https://www.tutorialspoint.com/map_reduce/implementation_in_hadoop.htm</li>
+<li>https://www.vultr.com/docs/install-and-configure-apache-hadoop-on-ubuntu-20-04/</li>
+<li>https://www.guru99.com/create-your-first-hadoop-program.html</li>
+<li>https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html</li>
+<li>https://github.com/parshva45/Big-Data-Analytics</li>
+<li>https://timepasstechies.com/mapreduce-replicatereduce-side-joinaverage-pattern-real-world-example/</li>
+<li>https://github.com/Codispatch/Popular-Movies-Hadoop-Map-Reduce</li>
+<li>https://github.com/Codispatch/Popular-Movies-Hadoop-Map-Reduce/tree/master/bin</li>
+<li>https://github.com/adijadhav99/uniqueListerner</li>
+<li>https://github.com/kiran0541/Map-Reduce/blob/master/Average%20age%20of%20male%20and%20female%20people%20died%20in%20titanic</li>
+<li>https://github.com/kiran0541/Map-Reduce/blob/master/Average%20fare%20of%20each%20class%20in%20titanic</li>
+<li>https://github.com/vasanth-mahendran/weather-data-hadoop</li>
+</ul>
+              </pre>
+            </div>
+          </div>
+
+          <br/>
+          <br/>
+
+        </div>
+      </div>
+    </section>
+    <section class="s2">
+      <div class="main-container">
+        <footer
+          class="
+            d-flex
+            flex-wrap
+            justify-content-between
+            align-items-center
+            py-3
+            my-4
+            border-top
+          "
+        >
+          <div class="col-md-4 col d-flex align-items-center">
+            <a
+              href="/"
+              class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
+            >
+              <svg class="bi" width="30" height="24">
+                <use xlink:href="#bootstrap"></use>
+              </svg>
+            </a>
+            <span class="text-muted"
+              >© 2022 @ Shaik Tajuddinsha
+              <img
+                src="https://www.codewars.com/users/shaiktaj/badges/small"
+                alt="codewards badge"
+                srcset=""
+            /></span>
+          </div>
+
+          <ul
+            class="nav col-md-4 col justify-content-evenly list-unstyled d-flex"
+          >
+            <a href="https://github.com/shaik1729"
+              ><img src="../images/github.svg" alt="Check my Github" srcset=""
+            /></a>
+            <a href="https://www.linkedin.com/in/shaik-tajuddinsha-85a5411b4/"
+              ><img
+                src="../images/linkedin.svg"
+                alt="Check my Linkedin"
+                srcset=""
+            /></a>
+            <a href="https://www.facebook.com/profile.php?id=100013345205828"
+              ><img
+                src="../images/facebook.svg"
+                alt="Check my Facebook"
+                srcset=""
+            /></a>
+          </ul>
+        </footer>
+      </div>
+    </section>
+  </body>
+</html>
